@@ -1,0 +1,1 @@
+This is HigherEd, a website designed to help students better learn the material they are taught in school, and to help teachers better convey that material. Any questions please email Jake at dluhy2@illinois.edu
