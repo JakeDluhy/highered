@@ -1,0 +1,13 @@
+<div class="title-page-wrapper">
+	<div class="title">
+	{{#if editTitle}}
+		{{focus-input class="title-input" value=title focus-out="stopEdit"}}
+	{{else}}
+		<h2 {{action 'editTitle' on="click"}}>{{title}}</h2>
+	{{/if}}
+	</div>
+	<div class="name">
+		<span>By</span><br>
+		<h4>{{fullName}}</h4>
+	</div>
+</div>

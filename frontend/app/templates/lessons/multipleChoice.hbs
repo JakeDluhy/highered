@@ -1,0 +1,10 @@
+<div class="question-container">
+	<p>{{multipleChoiceQuestion}}</p>
+</div>
+<div class="answers-container">
+	{{#each answer in multipleChoiceAnswers}}
+		<div {{bind-attr class=":answer-container answer.choiceId"}}>
+			<div class="answer">{{answer.content}}</div>
+		</div>
+	{{/each}}
+</div>

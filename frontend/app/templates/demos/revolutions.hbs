@@ -1,0 +1,79 @@
+<div class="options-container z-depth-2">
+  {{#if defaultView}}
+  {{#paper-button raised=true classNames="default-icon expand"}}<i class="fa fa-caret-square-o-right"></i>{{/paper-button}}
+  <div class="play-controls z-depth-2">
+    {{#paper-button raised=true classNames="default-icon"}}<i class="fa fa-play"></i>{{/paper-button}}
+    {{#paper-button raised=true classNames="default-icon"}}<i class="fa fa-pause"></i>{{/paper-button}}
+    {{#paper-button raised=true classNames="default-icon"}}<i class="fa fa-forward"></i>{{/paper-button}}
+    {{#paper-button raised=true classNames="default-icon"}}<i class="fa fa-backward"></i>{{/paper-button}}
+  </div>
+  {{else}}
+  <div class="content-header"><h5>Options</h5></div>
+  <div class="content-wrapper options">
+    <div class='options content-container'>
+      <div class="axis-selection">
+        <a href="#" {{bind-attr class=":button :xaxis axisIsX:selected:deselected"}} {{action 'setXaxis' on='click'}}>X-Axis</a>
+        <a href="#" {{bind-attr class=":button :yaxis axisIsX:deselected:selected"}} {{action 'setYaxis' on='click'}}>Y-Axis</a>
+      </div>
+      <div class="axis-selection">
+        <a href="#" {{bind-attr class=":button :continuous discrete:deselected:selected"}} {{action 'makeNotDiscrete' on='click'}}>Continuous</a>
+        <a href="#" {{bind-attr class=":button :discrete discrete:selected:deselected"}} {{action 'makeDiscrete' on='click'}}>Discrete</a>
+      </div>
+      <div class="function-container">
+        {{#if axisIsX}}
+          <div class="function-label">f(x) = </div>
+        {{else}}
+          <div class="function-label">f(y) = </div>
+        {{/if}}
+        {{input class="function-input" placeholder="Enter a function" value=functionInput focus-out="showFunction"}}
+      </div>
+      {{#if discrete}}
+        <div class="discrete-container">
+          <div class="sub-header" {{action 'toggleDiscrete' on='click'}}>Discrete Steps</div>
+          <div class="discrete-wrapper option-wrapper" {{action 'discreteFinished' on='mouseLeave'}}>
+            {{single-slider orientation="horizontal" action="setNumDiscrete" rangeStart=1 rangeEnd=20 pos=10}}
+          </div>
+        </div>
+      {{/if}}
+      <div class="range-container">
+        <div class="sub-header" {{action 'toggleRange' on='click'}}>Restrict The Function</div>
+        <div class="range-wrapper option-wrapper" {{action 'rangeFinished' on='mouseLeave'}}>
+          {{#if axisIsX}}
+            {{dual-slider orientation="horizontal" action='dualBoundRestrict'}}
+          {{else}}
+            {{dual-slider orientation="vertical" action='dualBoundRestrict'}}
+          {{/if}}
+        </div>
+      </div>
+      <div class="axis-container">
+        <div class="sub-header" {{action 'toggleAxis' on='click'}}>Rotation Axis</div>
+        <div class="axis-wrapper option-wrapper">
+          {{#if axisIsX}}
+            {{single-slider orientation="vertical" action="showAxis"}}
+          {{else}}
+            {{single-slider orientation="horizontal" action="showAxis"}}
+          {{/if}}
+        </div>
+      </div>
+      <a href="#" class="button start-animation" {{action 'startAnimation' on="click"}}>Start the animation</a>
+    </div>
+  </div>
+  <div class="content-header"><h5>Controls</h5></div>
+  <div class="content-wrapper controls  display-none">
+      <div class='controls content-container'>
+        <div class="row">
+            <div class="small-4 columns"><div class="ani-controls slow" {{action 'slowAnimation' on="click"}}><i class="fa fa-backward"></i></div></div>
+            <div class="small-4 columns">
+                <div class="ani-controls play" {{action 'playAnimation' on="click"}}><i class="fa fa-play"></i></div>
+                <div class="ani-controls pause" {{action 'pauseAnimation' on="click"}}><i class="fa fa-pause"></i></div>
+            </div>
+            <div class="small-4 columns"><div class="ani-controls speed" {{action 'speedAnimation' on="click"}}><i class="fa fa-forward"></i></div></div>
+        </div>
+        <a href="#" class="button reset" {{action 'resetDisplay' on="click"}}>Reset</a>
+        <p>Use the scroll wheel to zoom,<br> left click + mouse move for rotation,<br> right click + mouse move for panning</p>
+      </div>
+  </div>
+  {{/if}}
+  
+</div>
+<div class='primary-container'></div>

@@ -1,0 +1,103 @@
+<div class="welcome-banner index-div">
+	<div class="opacity-shield">
+		<div class="welcome-container">
+			<h2>Welcome to HigherEd!</h2>
+			<h4>The next generation of better Education starts here.</h4>
+			{{#if loggedIn}}
+				{{#link-to 'demos' class="btn"}}Play around!{{/link-to}}
+			{{else}}
+				{{#link-to 'signup' class="btn"}}Come explore with us!{{/link-to}}
+			{{/if}}
+		</div>
+	</div>
+</div>
+
+<div id="about" class="about index-div">
+	<div class="container">
+		<div class="row">
+			<div class="col s12 m10">
+				<div class="card white">
+					<div class="card-content grey-text text-darken-4">
+						<div class="row">
+							<div class="col s8">
+								<div class="valign-wrapper">
+									<p class="valign">The idea behind HigherEd is that students will learn faster and better the more they interact with the material.</p>
+								</div>
+							</div>
+							<div class="col s4">
+								<div class="circle-div image-container right">
+									<img src="../images/frontpageAbout1.png">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col s12 m10 offset-m2">
+				<div class="card white">
+					<div class="card-content white grey-text text-darken-4">
+						<div class="row">
+							<div class="col s4">
+								<div class="circle-div image-container left">
+									<img src="../images/frontpageAbout2.png">
+								</div>
+							</div>
+							<div class="col s8">
+								<div class="valign-wrapper">
+									<p class="valign">We provide the animations and interactive graphs. Teachers, TA's, and students provide the content.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col s12 m10">
+				<div class="card white">
+					<div class="card-content white grey-text text-darken-4">
+						<div class="row">
+							<div class="col s8">
+								<div class="valign-wrapper">
+									<p>With our intuitive lesson creating tool, making content for your students is a snap.</p>
+								</div>
+							</div>
+							<div class="col s4">
+								<div class="circle-div image-container right">
+									<img src="../images/frontpageAbout3.png">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="signup index-div">
+	<div class="signup-container">
+		<h3 class="center-align">Signup for our Newsletter</h3>
+		{{paper-text type="email" label="Email" value=email}}
+		{{#paper-button raised=true classNames="email-submit" action="submitSignup"}}Confirm{{/paper-button}}
+	</div>
+</div>
+<div class="press index-div">
+	<div class="container">
+		<div class="press-container">
+			<h3 class="center-align press-header">As seen in</h3>
+			<div class="row">
+				<div class="col s4 offset-s4">
+					<div class="image-container">
+						<a href="http://aerospace.illinois.edu/news/seeing-equals-learning-student%E2%80%99s-startup-features-visual-mathematics" target="_blank"><img src="../images/illinoisPress.png"></a>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s4 offset-s4">
+					<div class="image-container rackspace-logo">
+						<img src="../images/rackspaceLogo.png">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{{partial 'partials/footer'}}

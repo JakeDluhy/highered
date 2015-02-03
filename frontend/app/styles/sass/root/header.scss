@@ -1,0 +1,13 @@
+.brand-logo {
+  margin: 0 5px;
+  &.active {
+    background-color: transparent;
+  }
+}
+nav {
+	.side-nav {
+		a.active {
+			background-color: $primary;
+		}
+	}
+}

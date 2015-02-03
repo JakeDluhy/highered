@@ -1,0 +1,18 @@
+<div class="step-viewing-area">
+	{{#if multipleChoice}}
+		{{view 'lessons.multipleChoice'}}
+	{{/if}}
+	{{#if animation}}
+		{{view animationType}}
+	{{/if}}
+	{{#if equation}}
+		{{view 'lessons.equationViewer'}}
+	{{/if}}
+</div>
+<div class="lesson-explanation-bar">
+	{{#each instruction in instructions}}
+		{{#square-div addedClass="instruction-node" centerVertically=true}}
+			{{instruction.orderNumber}}
+		{{/square-div}}
+	{{/each}}
+</div>

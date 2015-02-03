@@ -1,0 +1,21 @@
+<div class="lesson-nav-bar">
+	<div class="step-preview">
+		{{#link-to 'lessons.new.index'}}
+			<div class="title-preview">
+				<h2>Title Page</h2>
+			</div>
+		{{/link-to}}
+		{{#each step in steps}}
+			{{#link-to 'lessons.show.step' step}}<img {{bind-attr src=step.stepUrl}}>{{/link-to}}
+		{{/each}}
+		{{#link-to 'lessons.new.createStep'}}
+			<div class="create-step">
+				<h2>Create Step</h2>
+			</div>
+		{{/link-to}}
+	</div>
+</div>
+
+<div class="lesson-main-container">
+{{outlet}}
+</div>

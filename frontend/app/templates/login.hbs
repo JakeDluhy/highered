@@ -1,0 +1,16 @@
+<div class="login-container auth-container">
+	{{#if loggedIn}}
+		Logged in
+	{{else}}
+		<span class="login-header">Login</span>
+		<span class="signup-change">Not a member? {{#link-to 'signup'}}Signup{{/link-to}}</span>
+		<form class="login-form" action="/login" method="POST">
+			{{paper-text label="Email" type="email" value=email}}
+			{{paper-text label="Password" type="password" value=password}}
+			<div class="row">
+				<div class="col s12 m6">{{#paper-checkbox checked=rememberMe}}Remember Me!{{/paper-checkbox}}</div>
+				<div class="col s12 m6">{{#paper-button raised=true action="submitForm"}}Sign in{{/paper-button}}</div>
+			</div>
+		</form>
+	{{/if}}
+</div>

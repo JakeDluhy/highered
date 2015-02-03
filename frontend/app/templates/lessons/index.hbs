@@ -1,0 +1,6 @@
+<div>Lesson Library</div>
+<ul id="lesson-list">
+  {{#each lesson in model}}
+  <li>{{#link-to 'lessons.show' lesson}}{{lesson.title}}{{/link-to}}</li>
+  {{/each}}
+</ul>

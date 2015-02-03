@@ -1,0 +1,48 @@
+<div class="options-container">
+  <div class="content-header"><h5>Options</h5></div>
+  <div class="content-wrapper options">
+      <div class='options content-container'>
+        <div class="axis-selection">
+          <a href="#" {{bind-attr class=":button :xaxis axisIsX:selected:deselected"}} {{action 'setXaxis' on='click'}}>X-Axis</a>
+          <a href="#" {{bind-attr class=":button :yaxis axisIsX:deselected:selected"}} {{action 'setYaxis' on='click'}}>Y-Axis</a>
+        </div>
+        <div class="axis-selection">
+          <a href="#" {{bind-attr class=":button :continuous discrete:deselected:selected"}} {{action 'makeNotDiscrete' on='click'}}>Continuous</a>
+          <a href="#" {{bind-attr class=":button :discrete discrete:selected:deselected"}} {{action 'makeDiscrete' on='click'}}>Discrete</a>
+        </div>
+        <div class="function-container">
+          {{#if axisIsX}}
+            <div class="function-label">f(x) = </div>
+          {{else}}
+            <div class="function-label">f(y) = </div>
+          {{/if}}
+          {{input class="function-input" placeholder="Enter a function" value=functionInput focus-out="showFunction"}}
+        </div>
+        {{#if discrete}}
+          <div class="discrete-container">
+            <div class="sub-header" {{action 'toggleDiscrete' on='click'}}>Discrete Steps</div>
+            <div class="discrete-wrapper option-wrapper" {{action 'discreteFinished' on='mouseLeave'}}>
+              {{single-slider orientation="horizontal" action="setNumDiscrete" rangeStart=1 rangeEnd=20 pos=10}}
+            </div>
+          </div>
+        {{/if}}
+        <div class="range-container">
+          <div class="sub-header" {{action 'toggleRange' on='click'}}>Restrict The Integral</div>
+          <div class="range-wrapper option-wrapper" {{action 'rangeFinished' on='mouseLeave'}}>
+            {{#if axisIsX}}
+              {{dual-slider orientation="horizontal" action='dualBoundIntegrate'}}
+            {{else}}
+              {{dual-slider orientation="vertical" action='dualBoundIntegrate'}}
+            {{/if}}
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="content-header"><h5>Controls</h5></div>
+  <div class="content-wrapper controls">
+    <div class='controls content-container'>
+      <a href="#" class="button reset" {{action 'resetDisplay' on="click"}}>Reset</a>
+    </div>
+  </div>
+</div>
+<div class='primary-container'></div>

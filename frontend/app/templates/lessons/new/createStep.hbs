@@ -1,0 +1,18 @@
+{{#if selectType}}
+	<div class="select-box">
+	{{#each choice in choices}}
+		<div class="choice-label">
+			{{choice.label}}
+		</div>
+		{{#if choice.animationTypes}}
+			{{#each animation in choice.animationTypes}}
+				<div class="animation-type">
+					{{animation.type}}
+				</div>
+			{{/each}}
+		{{/if}}
+	{{/each}}
+	</div>
+{{else}}
+
+{{/if}}

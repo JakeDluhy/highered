@@ -1,0 +1,122 @@
+// Fix the navbar
+html, body {
+  height: 100%;
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+#main-container {
+  height: 100%;
+}
+#main-wrapper {
+  position: relative;
+  @include calc(height, "100% - 64px");
+}
+
+body {
+  font: 14px 'Open Sans', sans-serif;
+  font-weight: 300;
+  & > div { height: 100%;}
+}
+h1, h2, h3, h4, h5, h6, p, a {
+  color: $darkTextcolor;
+}
+//Perfect fourth type scale
+h1 {font-size: 3.998em !important;}
+h2 {font-size: 2.827em !important;}
+h3 {font-size: 1.999em !important;}
+h4 {font-size: 1.414em !important;}
+h5 {font-size: 1em !important;}
+h6 {font-size: 0.707em !important;}
+
+a {
+  color: $accent;
+}
+
+a.btn, button {
+  background-color: $accent !important;
+  color: white;
+  &:hover {
+    background-color: $lightAccent !important;
+  }
+}
+a.btn {
+  -webkit-box-shadow: rgba(0, 0, 0, 0.258824) 0px 2px 5px 0px;
+  box-shadow: rgba(0, 0, 0, 0.258824) 0px 2px 5px 0px;
+  &:hover {
+    transform: translate3d(0, -1px, 0);
+    -webkit-box-shadow: rgba(0, 0, 0, 0.4) 0px 4px 8px 0px;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 4px 8px 0px;
+  }
+}
+button.md-button {
+  height: 36px;
+  padding: 8px 30px;
+}
+md-input-group.md-default-theme {
+  label {
+    color: $primaryText;
+    &.active {
+      background-color: transparent;
+    }
+  }
+  input {
+    color: $primaryText;
+    border-color: $primaryText;
+  }
+}
+
+.divider {
+  height: 1px;
+  width: 100%;
+  color: $divider;
+}
+
+.circle-div {
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+  background-color: $whiteBackground;
+}
+
+.info-container {
+  padding: 10px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+  background-color: $whiteBackground;
+}
+
+.image-container {
+  position: relative;
+  margin: 5px;
+  img {
+    max-width: 120%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    padding: 10px;
+  }
+}
+
+.right {
+  float: right;
+}
+.left {
+  float: left;
+}
+
+.active {
+  background-color: transparent;
+}
+
+.full-height-view {
+  height: 100%;
+}
+
+.display-none {
+  display: none;
+}

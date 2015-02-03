@@ -1,0 +1,33 @@
+.lesson-main-container {
+	.step-viewing-area {
+		.question-container {
+			padding: 5px;
+			background-color: $aqua;
+			p {
+				text-align: center;
+				color: white;
+				margin: 0;
+			}
+		}
+		.answers-container {
+			.answer-container {
+				float: left;
+				width: 50%;
+				.answer {
+					width: 100%;
+					text-align: center;
+					font-size: 16px;
+					color: white;
+				}
+				&.\31 { background-color: #9c1d08; }
+				&.\32 { background-color: #029c51; }
+				&.\33 { background-color: #0958c2; }
+				&.\34 { background-color: #c9ac00; }
+				&:hover {
+					cursor: pointer;
+					opacity: 0.7;
+				}
+			}
+		}
+	}
+}

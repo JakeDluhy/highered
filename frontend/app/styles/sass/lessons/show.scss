@@ -1,0 +1,103 @@
+.lesson-nav-bar {
+	width: 100%;
+	height: 80px;
+	padding: 5px;
+	.step-direction {
+		float: left;
+		width: 10%;
+		font-size: 20px;
+		font-size: 8vh;
+		text-align: center;
+	}
+	.step-back {
+		
+	}
+	.step-preview {
+		float: left;
+		width: 79.99%;
+		height: 100%;
+		a, div {
+			display: block;
+			height: 100%;
+			float: left;
+			padding: 5px;
+			margin: 0 5px;
+			img {
+				max-height: 100%;
+				border: 1px solid black;
+			}
+		}
+		div{
+			overflow: hidden;
+			background-color: $darkSilver;
+			border: 1px solid black;
+			min-width: 60px;
+			h2, p, h4 {
+				margin: 0px;
+				color: white;
+				text-align: center;
+			}
+			h2 {
+				font-size: 8px;
+				margin-top: 10px;
+			}
+			p {
+				font-size: 4px;
+			}
+			h4 {
+				font-size: 6px;
+			}
+		}
+	}
+	.step-forward {
+
+	}
+}
+.lesson-main-container {
+	width: 100%;
+	height: 85%;
+
+	//Index title page
+	.title-page-wrapper {
+		width: 400px;
+		margin: 8% auto;
+		background-color: $darkTeal;
+		color: white;
+		.title {
+			padding: 5px;
+			text-align: center;
+			h2 {
+				color: white;	
+			}
+		}
+		.name {
+			padding: 5px;
+			text-align: center;
+			h4 {
+				color: white;	
+			}
+		}
+	}
+
+	.step-viewing-area {
+		width: 94%;
+		float: left;
+		height: 100%;
+	}
+
+	.lesson-explanation-bar {
+		width: 6%;
+		float: right;
+		height: 100%;
+		padding: 0 5px;
+		.instruction-node {
+			margin-bottom: 5px;
+			background-color: $darkTeal;
+			.content {
+				text-align: center;
+				color: white;
+			}
+		}
+	}
+}
+

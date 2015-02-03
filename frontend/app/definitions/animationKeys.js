@@ -1,0 +1,5 @@
+export default {
+	REVOLUTIONS_OF_SOLIDS: 1,
+	DERIVATIVES: 2,
+	INTEGRALS: 3
+};

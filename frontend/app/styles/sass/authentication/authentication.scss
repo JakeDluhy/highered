@@ -1,0 +1,19 @@
+.auth-container {
+	padding: 100px;
+	width: 600px;
+	margin: 0 auto;
+	.login-header{
+		font-weight: bold;
+		font-size: 1.999em;
+	}
+	.signup-change {
+		float: right;
+		margin-top: 10px;
+	}
+	md-checkbox {
+		margin: 5px;
+	}
+	button {
+		float: right;
+	}
+}

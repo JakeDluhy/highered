@@ -1,0 +1,24 @@
+.scroll-arrow-background {
+	background: none;
+	height: 50px;
+	width: 100%;
+	&.up {
+		position: absolute;
+		top: 0;
+	}
+	&.down {
+		position: absolute;
+		bottom: 0;
+	}
+	.scroll-arrow {
+		display: none;
+		opacity: 0.5;
+		margin: 0 auto;
+		width: 100px;
+		height: 50px;
+		background-color: black;
+		&.visible {
+			display: block;
+		}
+	}
+}

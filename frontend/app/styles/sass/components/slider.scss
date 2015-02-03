@@ -1,0 +1,147 @@
+.ember-slider {
+	&.horizontal {
+		padding: 60px 40px;
+		.slider-background {
+			position: relative;
+			height: 14px;
+			width: 100%;
+			border: 1px solid #d3d3d3;
+			background-color: #fafafa;
+			.slider-base {
+				position: relative;
+				height: 100%;
+				width: 100%;
+				background-color: #fafafa;
+				.slider-second-part {
+					position: absolute;
+					background-color: #fafafa;
+					top: 0;
+					left: 100%;
+					right: 0;
+					bottom: 0;
+				}
+				.handle-container {
+					position: absolute;
+					left: -25px;
+					width: 50px;
+					height: 60px;
+					.handle {
+						position: absolute;
+						left: 13px;
+						width: 24px;
+						height: 18px;
+						background-color: #008cba;
+					}
+					.handle-label {
+						display: block;
+						position: absolute;
+						border: 1px solid #D9D9D9;
+						font: 400 12px/12px Arial;
+						border-radius: 3px;
+						background: #fff;
+						padding: 5px;
+						text-align: center;
+					}
+					&.handle-container-lower {
+						top: -3px;
+						.handle {
+							top: 0;
+						}
+						.handle-label {
+							bottom: 0;
+						}
+					}
+					&.handle-container-upper {
+						bottom: -3px;
+						.handle {
+							bottom: 0;
+						}
+						.handle-label {
+							top: 0;
+						}
+					}
+				}
+			}
+		}
+	}
+	&.vertical {
+		width: 150px;
+		padding: 40px 5px;
+		margin: 0 auto;
+		.slider-background {
+			position: relative;
+			height: 200px;
+			width: 14px;
+			border: 1px solid #d3d3d3;
+			background-color: #fafafa;
+			margin: 0 auto;
+			.slider-base {
+				position: relative;
+				height: 100%;
+				width: 100%;
+				background-color: #fafafa;
+				.slider-second-part {
+					position: absolute;
+					background-color: #fafafa;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 100%;
+				}
+				.handle-container {
+					position: absolute;
+					left: -6px;
+					bottom: -10px;
+					width: 80px;
+					height: 30px;
+					.handle {
+						position: absolute;
+						width: 24px;
+						height: 18px;
+						background-color: #008cba;
+					}
+					.handle-label {
+						display: block;
+						max-width: 50px;
+						position: absolute;
+						border: 1px solid #D9D9D9;
+						font: 400 12px/12px Arial;
+						border-radius: 3px;
+						background: #fff;
+						padding: 5px;
+						text-align: center;
+					}
+					&.handle-container-lower {
+						left: -62px;
+						.handle {
+							right: 0;
+							bottom: 0;
+						}
+						.handle-label {
+							top: 3px;
+							left: 0;
+						}
+					}
+					&.handle-container-upper {
+						.handle {
+							bottom: 0;
+						}
+						.handle-label {
+							right: 0;
+							top: 0;
+						}
+					}
+				}
+			}
+		}
+	}
+	.slider-connector {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: #e5e5e5;
+	}
+}
+

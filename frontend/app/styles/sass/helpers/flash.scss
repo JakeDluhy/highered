@@ -1,0 +1,23 @@
+#flash-view {
+  position: fixed;
+  top: 64px;
+  width: 100%;
+  z-index: 20;
+  overflow: hidden;
+}
+#flash-view #message {
+  color: #fff;
+  font-size: 16px;
+  line-height: 1.2em;
+  text-align: center;
+  padding: 20px 0;
+}
+#flash-view.is-notice #message {
+  background-color: #43AC6A;
+}
+#flash-view.is-warning #message {
+  background-color: #B5AD18;
+}
+#flash-view.is-error #message {
+  background-color: #f04124;
+}

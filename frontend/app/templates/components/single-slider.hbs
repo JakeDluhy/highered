@@ -1,0 +1,21 @@
+<div class="slider-background">
+	<div class="slider-base">
+		<div class="slider-second-part" {{bind-attr style=percentage}}>
+			<div class="handle-container handle-container-upper">
+				<div class="handle" {{action 'moveHandle' on='mouseDown'}}>
+
+				</div>
+				<div class="handle-label">
+					{{#if inputting}}
+						{{slider-label-input value=pos focus-out='confirmValue' insert-newline="confirmValue"}}
+					{{else}}
+						<div {{action 'inputValue' on="click"}}>
+							<strong>Value:</strong>
+							<span>{{pos}}</span>
+						</div>
+					{{/if}}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

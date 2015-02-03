@@ -1,0 +1,14 @@
+<div id="backend-container">
+  {{#if isAdmin}}
+  <div class="creating-container">
+    {{#link-to 'cooking.new'}}Cooking{{/link-to}}
+    {{#link-to 'programming.new'}}Programming{{/link-to}}
+    {{#link-to 'life.new'}}Life{{/link-to}}
+  </div>
+  {{else}}
+  <div class="auth-container">
+    {{#link-to 'signup'}}Sign up{{/link-to}}
+    {{#link-to 'login'}}Login{{/link-to}}
+  </div>
+  {{/if}}
+</div>

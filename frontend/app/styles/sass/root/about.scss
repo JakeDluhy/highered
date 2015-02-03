@@ -1,0 +1,43 @@
+.about-container {
+	height: 400px;
+  background: $primary url('../images/welcomeBackground.jpg');
+  position: relative;
+  .container {
+  	position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+  }
+  .about-info {
+    width: 400px;
+    margin: 15px auto;
+    text-align: justify;
+    h3 {
+      margin: 0;
+      color: #fff;
+    }
+    p {
+      color: #fff;
+    }
+  }
+}
+.team-content {
+  width: 600px;
+  margin: 15px auto;
+  text-align: justify;
+}
+.team-banner {
+  background-color: $primary;
+  padding: 15px;
+  .team-header {
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: 300;
+    color: white;
+    margin: 0;
+  }
+}
+
+.profile-headshot {
+	margin: 10px auto;
+}

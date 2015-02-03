@@ -1,0 +1,38 @@
+<div class="slider-background">
+	<div class="slider-base">
+		<div class="slider-connector" {{bind-attr style=firstPercentage}}>
+			<div class="handle-container handle-container-lower">
+				<div class="handle" {{action 'moveFirstHandle' on='mouseDown'}}>
+
+				</div>
+				<div class="handle-label">
+					{{#if inputtingFirst}}
+						{{slider-label-input value=first focus-out='confirmValueFirst' insert-newline="confirmValueFirst"}}
+					{{else}}
+						<div {{action 'inputValueFirst' on="click"}}>
+							<strong>Value:</strong>
+							<span>{{first}}</span>
+						</div>
+					{{/if}}
+				</div>
+			</div>
+		</div>
+		<div class="slider-second-part" {{bind-attr style=secondPercentage}}>
+			<div class="handle-container handle-container-upper">
+				<div class="handle" {{action 'moveSecondHandle' on='mouseDown'}}>
+
+				</div>
+				<div class="handle-label">
+				{{#if inputtingSecond}}
+					{{slider-label-input value=second focus-out='confirmValueSecond' insert-newline="confirmValueSecond"}}
+				{{else}}
+					<div {{action 'inputValueSecond' on="click"}}>
+						<strong>Value:</strong>
+						<span>{{second}}</span>
+					</div>
+				{{/if}}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
