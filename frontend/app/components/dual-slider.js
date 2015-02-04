@@ -41,7 +41,6 @@ var DualSliderComponent = Ember.Component.extend({
 		} else {
 			this.set('firstPercentage', 'left: ' + val + '%;');
 		}
-		this.sendAction('action', this.get('first'), this.get('second'));
 	}.observes('first'),
 	setSecondPercentage: function() {
 		var second = this.get('second');
@@ -62,7 +61,6 @@ var DualSliderComponent = Ember.Component.extend({
 		} else {
 			this.set('secondPercentage', 'left: ' + val + '%;');
 		}
-		this.sendAction('action', this.get('first'), this.get('second'));
 	}.observes('second'),
 	actions: {
 		moveFirstHandle: function() {
@@ -81,7 +79,7 @@ var DualSliderComponent = Ember.Component.extend({
 					var baseOffset = baseBot - event.pageY;
 					var val = (baseOffset/baseHeight)*range + rangeStart;
 					self.set('first', self.roundIt(val));
-					self.sendAction('action', self.get('first'), self.get('second'));
+					self.triggerAction(self.get('first'), self.get('second'));
 				});
 			} else {
 				var baseLeft = this.$('.slider-base').offset().left;
@@ -93,7 +91,7 @@ var DualSliderComponent = Ember.Component.extend({
 					var baseOffset = event.pageX - baseLeft;
 					var val = (baseOffset/baseWidth)*range + rangeStart;
 					self.set('first', self.roundIt(val));
-					self.sendAction('action', self.get('first'), self.get('second'));
+					self.triggerAction(self.get('first'), self.get('second'));
 				});
 			}
 			$(document).on('mouseup', function() {
@@ -114,7 +112,7 @@ var DualSliderComponent = Ember.Component.extend({
 					var baseOffset = baseBot - event.pageY;
 					var val = (baseOffset/baseHeight)*range + rangeStart;
 					self.set('second', self.roundIt(val));
-					self.sendAction('action', self.get('first'), self.get('second'));
+					self.triggerAction(self.get('first'), self.get('second'));
 				});
 			} else {
 				var baseLeft = this.$('.slider-base').offset().left;
@@ -125,7 +123,7 @@ var DualSliderComponent = Ember.Component.extend({
 					var baseOffset = event.pageX - baseLeft;
 					var val = (baseOffset/baseWidth)*range + rangeStart;
 					self.set('second', self.roundIt(val));
-					self.sendAction('action', self.get('first'), self.get('second'));
+					self.triggerAction(self.get('first'), self.get('second'));
 				});
 			}
 			$(document).on('mouseup', function() {
@@ -144,6 +142,13 @@ var DualSliderComponent = Ember.Component.extend({
 		confirmValueFirst: function() {
 			this.toggleProperty('inputtingFirst');
 		},
+	},
+	triggerAction: function(pos1, pos2) {
+		if(this.get('target') === 'view') {
+			this.get('parentView').send(this.get('action'), pos1, pos2);
+		} else {
+			this.sendAction('action', pos1, pos2);
+		}
 	},
 	roundIt: function(val) {
 		return parseInt(val*100)/100;

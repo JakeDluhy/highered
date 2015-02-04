@@ -7,16 +7,7 @@ var DemosIntegralsView = Ember.View.extend({
   didInsertElement : function(){
     this.get('controller').on('setAxis', this, this.setAxis);
     this.get('controller').on('chooseDiscrete', this, this.chooseDiscrete);
-    this.get('controller').on('setNumDiscrete', this, this.setNumDiscrete);
     this.get('controller').on('showFunction', this, this.showFunction);
-    this.get('controller').on('lowerBoundIntegrate', this, this.lowerBoundIntegrate);
-    this.get('controller').on('upperBoundIntegrate', this, this.upperBoundIntegrate);
-    this.get('controller').on('dualBoundIntegrate', this, this.dualBoundIntegrate);
-    this.get('controller').on('resetDisplay', this, this.resetDisplay);
-
-    this.get('controller').on('toggleSubContainer', this, this.toggleSubContainer);
-    this.get('controller').on('slideUpSubContainer', this, this.slideUpSubContainer);
-    this.get('controller').on('slideDownSubContainer', this, this.slideDownSubContainer);
 
     this.params = {
       functionInput: 0,
@@ -46,10 +37,7 @@ var DemosIntegralsView = Ember.View.extend({
   chooseDiscrete: function(isDiscrete) {
     this.integralParams.discrete = true;
     this.integralParams.numDiscrete = 10;
-    this.showFunction(this.params.functionInput);
-  },
-  setNumDiscrete: function(numDiscrete) {
-    this.integralParams.numDiscrete = numDiscrete;
+    (isDiscrete ? this.slideDown('.discrete-wrapper') : this.slideUp('.discrete-wrapper'));
   },
   showFunction: function(functionInput) {
     this.params.functionInput = functionInput;
@@ -57,53 +45,95 @@ var DemosIntegralsView = Ember.View.extend({
     this.display.create2DFunction(this.params);
     this.display.createIntegralDisplay(this.integralParams);
   },
-  lowerBoundIntegrate: function(lowerBound) {
-    this.integralParams.start = lowerBound;
-    this.display.createIntegralDisplay(this.integralParams);
+  actions: {
+    //Option setting event handlers
+    setNumDiscrete: function(num) {
+      this.integralParams.numDiscrete = num;
+      this.display.createIntegralDisplay(this.integralParams);
+    },
+    dualBoundIntegrate: function(lower, upper) {
+      this.integralParams.start = lower;
+      this.integralParams.end = upper;
+      this.display.createIntegralDisplay(this.integralParams);
+    },
+    //Controls
+    resetDisplay: function() {
+      this.display.clearDisplay();
+      this.params = {
+        functionInput: 0,
+        axis: 'x',
+        axisValue: 0,
+        start: -10,
+        end: 10
+      };
+      this.expandOptions();
+    },
+
+    //UI handling actions
+    openContainers: function() {
+      if(this.params.discrete) {this.slideDown('.discrete-wrapper')};
+      this.slideDown('.range-wrapper');
+      this.slideDown('.axis-wrapper');
+    },
+    expandOptions: function() {
+      this.expandOptions();
+    },
+    collapseOptions: function() {
+      this.collapseOptions();
+    },
+    discreteFinished: function() {
+      this.slideUp('.discrete-wrapper');
+      this.slideDown('.range-wrapper');
+    },
+    rangeFinished: function() {
+      this.slideUp('.range-wrapper');
+      this.slideDown('.axis-wrapper');
+    },
+    toggleDiscrete: function() {
+      $('.discrete-wrapper').slideToggle()
+    },
+    toggleRange: function() {
+      $('.range-wrapper').slideToggle();
+    },
+    toggleAxis: function() {
+      $('.axis-wrapper').slideToggle();
+    }
   },
-  upperBoundIntegrate: function(upperBound) {
-    this.integralParams.end = upperBound;
-    this.display.createIntegralDisplay(this.integralParams);
+  //UI handling fOptions
+  expandOptions: function() {
+    var self = this;
+    var container = $('.options-container');
+    container.animate({
+      width: "0"
+    }, 500, function() {
+      self.get('controller').set('optionsView', true);
+      container.animate({
+        width: "20%"
+      }, 1000, function() {
+        console.log('done');
+      });
+    });
   },
-  dualBoundIntegrate: function(lower, upper) {
-    this.integralParams.start = lower;
-    this.integralParams.end = upper;
-    this.display.createIntegralDisplay(this.integralParams);
+  collapseOptions: function() {
+    var self = this;
+    var container = $('.options-container');
+    container.animate({
+      width: "0"
+    }, 1000, function() {
+      self.get('controller').set('optionsView', false);
+      container.animate({
+        width: "50px"
+      }, 500, function() {
+        console.log('done');
+      });
+    });
   },
-  resetDisplay: function() {
-    this.display.clearDisplay();
-    this.params = {
-      functionInput: 0,
-      axis: 'x',
-      start: -10,
-      end: 10
-    };
-    this.integralParams = {
-      functionInput: 0,
-      axis: 'x',
-      start: -10,
-      end: 10
-    };
-    //Send action into component? Reset handles?
+  slideDown: function(classSelector) {
+    $(classSelector).slideDown();
   },
-  toggleContainers: function() {
-    var controlBoxes = $('.content-wrapper');
-    controlBoxes.animate({
-      height: 'toggle'
-    }, 1000);
+  slideUp: function(classSelector) {
+    $(classSelector).slideUp();
   },
-  toggleSubContainer: function(classSelector) {
-    var container = $(classSelector);
-    container.slideToggle();
-  },
-  slideUpSubContainer: function(classSelector) {
-    var container = $(classSelector);
-    container.slideUp();
-  },
-  slideDownSubContainer: function(classSelector) {
-    var container = $(classSelector);
-    container.slideDown();
-  }
 });
 
 export default DemosIntegralsView;

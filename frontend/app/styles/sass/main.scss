@@ -66,6 +66,10 @@ md-input-group.md-default-theme {
     border-color: $primaryText;
   }
 }
+.md-button.md-default-theme[disabled] {
+  background-color: $darkestBackground !important;
+  color: white !important;
+}
 
 .divider {
   height: 1px;

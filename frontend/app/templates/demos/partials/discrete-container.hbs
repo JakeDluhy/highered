@@ -1,0 +1,6 @@
+<div class="discrete-container">
+  {{#paper-button classNames="sub-header" action="toggleDiscrete" target="view" disabled=continuous}}Discrete Steps{{/paper-button}}
+  <div class="discrete-wrapper option-wrapper" {{action 'discreteFinished' on='mouseLeave' target="view"}}>
+    {{single-slider orientation="horizontal" action="setNumDiscrete" target="view" rangeStart=1 rangeEnd=20 pos=10}}
+  </div>
+</div>

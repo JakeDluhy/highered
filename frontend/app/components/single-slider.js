@@ -50,7 +50,7 @@ var SingleSliderComponent = Ember.Component.extend({
 					var baseOffset = baseBot - event.pageY;
 					var val = (baseOffset/baseHeight)*range + rangeStart;
 					self.set('pos', self.roundIt(val));
-					self.sendAction('action', self.get('pos'));
+					self.triggerAction(self.get('pos'));
 				});
 			} else {
 				var baseLeft = this.$('.slider-base').offset().left;
@@ -60,7 +60,7 @@ var SingleSliderComponent = Ember.Component.extend({
 					var baseOffset = event.pageX - baseLeft;
 					var val = (baseOffset/baseWidth)*range + rangeStart;
 					self.set('pos', self.roundIt(val));
-					self.sendAction('action', self.get('pos'));
+					self.triggerAction(self.get('pos'));
 				});
 			}
 			$(document).on('mouseup', function() {
@@ -73,6 +73,13 @@ var SingleSliderComponent = Ember.Component.extend({
 		confirmValue: function() {
 			this.toggleProperty('inputting');
 		},
+	},
+	triggerAction: function(position) {
+		if(this.get('target') === 'view') {
+			this.get('parentView').send(this.get('action'), position);
+		} else {
+			this.sendAction('action', position);
+		}
 	},
 	roundIt: function(val) {
 		return parseInt(val*100)/100;

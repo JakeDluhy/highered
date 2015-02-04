@@ -1,0 +1,8 @@
+<div class="function-container">
+  {{#if axisIsX}}
+    <div class="function-label">f(x) = </div>
+  {{else}}
+    <div class="function-label">f(y) = </div>
+  {{/if}}
+  {{input class="function-input" placeholder="Enter a function" value=functionInput action="showFunction" on="focus-out"}}
+</div>

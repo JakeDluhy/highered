@@ -244,8 +244,6 @@ DisplayLibrary.prototype.createIntegralDisplay = function(params) {
       discreteVals[i] = solveEquation(val);
       discreteValsBot[i] = solveBottom(val);
     }
-    console.log(discreteVals);
-    console.log(discreteValsBot);
   }
 
   var geo = new THREE.Geometry();
@@ -288,7 +286,6 @@ DisplayLibrary.prototype.createIntegralDisplay = function(params) {
       }
     }
   }
-  console.log(geo.vertices.length + 3);
   for(var j = 0; j < (geo.vertices.length - 3); j+=2) {
     geo.faces.push(new THREE.Face3(j,j+1,j+2));
     geo.faces.push(new THREE.Face3(j,j+2,j+1));

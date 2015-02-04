@@ -6,12 +6,6 @@ var DemosDerivativesView = Ember.View.extend({
   templateName: 'demos/derivatives',
   didInsertElement : function(){
     this.get('controller').on('showFunction', this, this.showFunction);
-    this.get('controller').on('showDerivative', this, this.showDerivative);
-    this.get('controller').on('resetDisplay', this, this.resetDisplay);
-
-    this.get('controller').on('toggleSubContainer', this, this.toggleSubContainer);
-    this.get('controller').on('slideUpSubContainer', this, this.slideUpSubContainer);
-    this.get('controller').on('slideDownSubContainer', this, this.slideDownSubContainer);
 
     this.params = {
       functionInput: 0,
@@ -35,33 +29,77 @@ var DemosDerivativesView = Ember.View.extend({
     this.params.functionInput = functionInput;
     this.derivativeParams.functionInput = functionInput;
     this.display.create2DFunction(this.params);
-    this.showDerivative(this.derivativeParams);
-  },
-  showDerivative: function(location) {
-    this.derivativeParams.location = location;
     this.display.showDerivative(this.derivativeParams);
+    this.slideDown('.location-wrapper');
   },
-  resetDisplay: function() {
-    this.display.clearDisplay();
+  actions: {
+    //Option setting
+    showDerivative: function(location) {
+      this.derivativeParams.location = location;
+      this.display.showDerivative(this.derivativeParams);
+    },
+    //Controls
+    resetDisplay: function() {
+      this.display.clearDisplay();
+      this.params = {
+        functionInput: 0,
+        start: -10,
+        end: 10
+      };
+      this.derivativeParams = {
+        functionInput: 0,
+        location: 0
+      };
+      this.expandOptions();
+    },
+    //UI handling actions
+    openContainers: function() {
+      this.slideDown('.location-wrapper');
+    },
+    expandOptions: function() {
+      this.expandOptions();
+    },
+    collapseOptions: function() {
+      this.collapseOptions();
+    },
+    toggleLocation: function() {
+      $('.location-wrapper').slideToggle()
+    }
   },
-  toggleContainers: function() {
-    var controlBoxes = $('.content-wrapper');
-    controlBoxes.animate({
-      height: 'toggle'
-    }, 1000);
+  //UI handling fOptions
+  expandOptions: function() {
+    var self = this;
+    var container = $('.options-container');
+    container.animate({
+      width: "0"
+    }, 500, function() {
+      self.get('controller').set('optionsView', true);
+      container.animate({
+        width: "20%"
+      }, 1000, function() {
+        console.log('done');
+      });
+    });
   },
-  toggleSubContainer: function(classSelector) {
-    var container = $(classSelector);
-    container.slideToggle();
+  collapseOptions: function() {
+    var self = this;
+    var container = $('.options-container');
+    container.animate({
+      width: "0"
+    }, 1000, function() {
+      self.get('controller').set('optionsView', false);
+      container.animate({
+        width: "50px"
+      }, 500, function() {
+        console.log('done');
+      });
+    });
   },
-  slideUpSubContainer: function(classSelector) {
-    var container = $(classSelector);
-    container.slideUp();
+  slideDown: function(classSelector) {
+    $(classSelector).slideDown();
   },
-  slideDownSubContainer: function(classSelector) {
-    var container = $(classSelector);
-    console.log(container);
-    container.slideDown();
+  slideUp: function(classSelector) {
+    $(classSelector).slideUp();
   }
 });
 

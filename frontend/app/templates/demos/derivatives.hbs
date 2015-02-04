@@ -1,24 +1,17 @@
-<div class="options-container">
-  <div class="content-header"><h5>Options</h5></div>
+<div {{bind-attr class=":options-container :z-depth-2 defaultView:collapsed:expanded"}}>
+  {{#if optionsView}}
+  {{partial 'demos/partials/options-header'}}
   <div class="content-wrapper options">
       <div class='options content-container'>
-        <div class="function-container">
-            <div class="function-label">f(x) = </div>
-            {{input class="function-input" placeholder="Enter a function" value=functionInput focus-out="showDerivativeFunction"}}
-        </div> 
-        <div class="location-container">
-          <div class="sub-header" {{action 'toggleLocation' on='click'}}>Derivative Location</div>
-          <div class="location-wrapper option-wrapper">
-            {{single-slider orientation="horizontal" action="showDerivative"}}
-          </div>
-        </div>  
+        {{partial 'demos/partials/function-container'}}
+        {{partial 'demos/partials/deriv-location-container'}} 
       </div>
   </div>
-  <div class="content-header"><h5>Controls</h5></div>
-  <div class="content-wrapper controls">
-    <div class='controls content-container'>
-      <a href="#" class="button reset" {{action 'resetDisplay' on="click"}}>Reset</a>
-    </div>
+  {{else}}
+  {{partial 'demos/partials/expand-options'}}
+  <div class="controls z-depth-2">
+    {{partial 'demos/partials/reset-display'}}
   </div>
+  {{/if}}
 </div>
 <div class='primary-container'></div>
