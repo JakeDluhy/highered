@@ -68,6 +68,48 @@ module.exports = function(params) {
     }
   }
 
+  //Push faces
+  for(var i = 0; i < meshPoints; i++) {
+    var sI = meshPoints*(i+1); //For first starting index
+    var sI2 = meshPoints*(i+2); //For second starting index
+    for(var j = 0; j < meshPoints-1; j ++) {
+      if(i === 0) {
+        //First Point, Fill end
+        geo.faces.push(new THREE.Face3(sI+j, sI+j+1, 0));
+        geo.faces.push(new THREE.Face3(sI+j+1, sI+j, 0));
+        //Filll Body
+        geo.faces.push(new THREE.Face3(sI+j, sI+j+1, sI2+j));
+        geo.faces.push(new THREE.Face3(sI+j+1, sI+j, sI2+j));
+        geo.faces.push(new THREE.Face3(sI+j+1, sI2+j, sI2+j+1));
+        geo.faces.push(new THREE.Face3(sI2+j, sI+j+1, sI2+j+1));
+      } else if(i === meshPoints-1) {
+        //Last Point, Fill end
+        geo.faces.push(new THREE.Face3(sI+j, sI+j+1, meshPoints-1));
+        geo.faces.push(new THREE.Face3(sI+j+1, sI+j, meshPoints-1));
+      } else {
+        geo.faces.push(new THREE.Face3(sI+j, sI+j+1, sI2+j));
+        geo.faces.push(new THREE.Face3(sI+j+1, sI+j, sI2+j));
+        geo.faces.push(new THREE.Face3(sI+j+1, sI2+j, sI2+j+1));
+        geo.faces.push(new THREE.Face3(sI2+j, sI+j+1, sI2+j+1));
+      }
+      if(j === 0 && i !== meshPoints-1) {
+        //First or last, fill end
+        geo.faces.push(new THREE.Face3(sI+j, sI2+j, i));
+        geo.faces.push(new THREE.Face3(sI2+j, sI+j, i));
+
+        geo.faces.push(new THREE.Face3(sI2+j, i, i+1));
+        geo.faces.push(new THREE.Face3(sI2+j, i+1, i));
+      } else if(j === meshPoints-2 && i !== meshPoints-1) {
+        //First or last, fill end
+        geo.faces.push(new THREE.Face3(sI+j+1, sI2+j+1, i));
+        geo.faces.push(new THREE.Face3(sI2+j+1, sI+j+1, i));
+
+        geo.faces.push(new THREE.Face3(sI2+j+1, i, i+1));
+        geo.faces.push(new THREE.Face3(sI2+j+1, i+1, i));
+      }
+    }
+  }
+
   var file = fs.createWriteStream('./hello.txt');
 
   file.write('hello world');

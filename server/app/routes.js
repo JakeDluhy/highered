@@ -1,7 +1,8 @@
 var home = require('./controllers/home'),
-    users = require('./controllers/users')
     lessons = require('./controllers/lessons'),
-    subjects = require('./controllers/subjects');
+    projects = require('./controllers/projects'),
+    subjects = require('./controllers/subjects'),
+    users = require('./controllers/users');
 
 module.exports.initialize = function(app) {
   app.get('/', home.index);
@@ -10,15 +11,19 @@ module.exports.initialize = function(app) {
   app.post('/session/save', home.saveRemember);
   app.post('/session/check', home.checkRemember);
 
-  app.get('/users', users.index);
-  app.get('/users/:id', users.show);
-
   app.get('/lessons', lessons.index);
   app.post('/lessons', lessons.create);
   app.get('/lessons/:id', lessons.show);
 
+  app.post('/projects/print-revolution', projects.printRevolution);
+
   app.get('/subjects', subjects.index);
   app.get('/subjects/:id', subjects.show);
+
+  app.get('/users', users.index);
+  app.get('/users/:id', users.show);
+
+  
 
   // app.get('/posts', posts.index);
   // app.get('/posts/:id', posts.getById);

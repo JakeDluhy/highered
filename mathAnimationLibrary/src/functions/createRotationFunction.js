@@ -36,7 +36,7 @@ DisplayLibrary.prototype.createRotationFunction = function(params) {
   if(params.discrete === true) {
     //Set up discrete environment
     var numDiscrete = (Number(params.numDiscrete) > 101 ? 101 : parseInt(Number(params.numDiscrete)));
-    var discreteVals = new Array(numDiscrete);
+    var discreteVals = Array(numDiscrete);
     var discreteStep = range/numDiscrete;
     for(var i = 0; i < numDiscrete; i++) {
       var val = start + (i*discreteStep + discreteStep/2);
@@ -114,44 +114,43 @@ DisplayLibrary.prototype.createRotationFunction = function(params) {
   }
 
   //Push Faces
+  for(var i = 0; i < meshPoints-1; i++) {
+    var sI = meshPoints*(i+1); //For first starting index
+    var sI2 = meshPoints*(i+2); //For second starting index
+    geo.faces.push(new THREE.Face3(sI, sI2, i));
+    geo.faces.push(new THREE.Face3(sI2, i+1, i));
+
+    geo.faces.push(new THREE.Face3(sI2+100, sI+100, i));
+    geo.faces.push(new THREE.Face3(sI2+100, i, i+1));
+  }
   for(var i = 0; i < meshPoints; i++) {
     var sI = meshPoints*(i+1); //For first starting index
     var sI2 = meshPoints*(i+2); //For second starting index
     for(var j = 0; j < meshPoints-1; j ++) {
       if(i === 0) {
         //First Point, Fill end
-        geo.faces.push(new THREE.Face3(sI+j, sI+j+1, 0));
         geo.faces.push(new THREE.Face3(sI+j+1, sI+j, 0));
         //Filll Body
         geo.faces.push(new THREE.Face3(sI+j, sI+j+1, sI2+j));
-        geo.faces.push(new THREE.Face3(sI+j+1, sI+j, sI2+j));
-        geo.faces.push(new THREE.Face3(sI+j+1, sI2+j, sI2+j+1));
         geo.faces.push(new THREE.Face3(sI2+j, sI+j+1, sI2+j+1));
       } else if(i === meshPoints-1) {
         //Last Point, Fill end
         geo.faces.push(new THREE.Face3(sI+j, sI+j+1, meshPoints-1));
-        geo.faces.push(new THREE.Face3(sI+j+1, sI+j, meshPoints-1));
       } else {
         geo.faces.push(new THREE.Face3(sI+j, sI+j+1, sI2+j));
-        geo.faces.push(new THREE.Face3(sI+j+1, sI+j, sI2+j));
-        geo.faces.push(new THREE.Face3(sI+j+1, sI2+j, sI2+j+1));
         geo.faces.push(new THREE.Face3(sI2+j, sI+j+1, sI2+j+1));
       }
-      if(j === 0 && i !== meshPoints-1) {
-        //First or last, fill end
-        geo.faces.push(new THREE.Face3(sI+j, sI2+j, i));
-        geo.faces.push(new THREE.Face3(sI2+j, sI+j, i));
+      // if(j === 0 && i !== meshPoints-1) {
+      //   //First or last, fill end
+      //   geo.faces.push(new THREE.Face3(sI+j, sI2+j, i));
 
-        geo.faces.push(new THREE.Face3(sI2+j, i, i+1));
-        geo.faces.push(new THREE.Face3(sI2+j, i+1, i));
-      } else if(j === meshPoints-2 && i !== meshPoints-1) {
-        //First or last, fill end
-        geo.faces.push(new THREE.Face3(sI+j+1, sI2+j+1, i));
-        geo.faces.push(new THREE.Face3(sI2+j+1, sI+j+1, i));
+      //   geo.faces.push(new THREE.Face3(sI2+j, i+1, i));
+      // } else if(j === meshPoints-2 && i !== meshPoints-1) {
+      //   //First or last, fill end
+      //   geo.faces.push(new THREE.Face3(sI2+j+1, sI+j+1, i));
 
-        geo.faces.push(new THREE.Face3(sI2+j+1, i, i+1));
-        geo.faces.push(new THREE.Face3(sI2+j+1, i+1, i));
-      }
+      //   geo.faces.push(new THREE.Face3(sI2+j+1, i, i+1));
+      // }
     }
   }
 
@@ -164,7 +163,7 @@ DisplayLibrary.prototype.createRotationFunction = function(params) {
   geo.computeVertexNormals();
   var mat = new THREE.MeshNormalMaterial( { color: 0x990000, morphTargets: true } );
 
-  functionObject = new THREE.Mesh( geo, mat);
+  var functionObject = new THREE.Mesh( geo, mat);
 
   this.scene.add(functionObject);
   functionObject.name = 'current';

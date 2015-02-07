@@ -432,44 +432,43 @@ DisplayLibrary.prototype.createRotationFunction = function(params) {
   }
 
   //Push Faces
+  for(var i = 0; i < meshPoints-1; i++) {
+    var sI = meshPoints*(i+1); //For first starting index
+    var sI2 = meshPoints*(i+2); //For second starting index
+    geo.faces.push(new THREE.Face3(sI, sI2, i));
+    geo.faces.push(new THREE.Face3(sI2, i+1, i));
+
+    geo.faces.push(new THREE.Face3(sI2+100, sI+100, i));
+    geo.faces.push(new THREE.Face3(sI2+100, i, i+1));
+  }
   for(var i = 0; i < meshPoints; i++) {
     var sI = meshPoints*(i+1); //For first starting index
     var sI2 = meshPoints*(i+2); //For second starting index
     for(var j = 0; j < meshPoints-1; j ++) {
       if(i === 0) {
         //First Point, Fill end
-        geo.faces.push(new THREE.Face3(sI+j, sI+j+1, 0));
         geo.faces.push(new THREE.Face3(sI+j+1, sI+j, 0));
         //Filll Body
         geo.faces.push(new THREE.Face3(sI+j, sI+j+1, sI2+j));
-        geo.faces.push(new THREE.Face3(sI+j+1, sI+j, sI2+j));
-        geo.faces.push(new THREE.Face3(sI+j+1, sI2+j, sI2+j+1));
         geo.faces.push(new THREE.Face3(sI2+j, sI+j+1, sI2+j+1));
       } else if(i === meshPoints-1) {
         //Last Point, Fill end
         geo.faces.push(new THREE.Face3(sI+j, sI+j+1, meshPoints-1));
-        geo.faces.push(new THREE.Face3(sI+j+1, sI+j, meshPoints-1));
       } else {
         geo.faces.push(new THREE.Face3(sI+j, sI+j+1, sI2+j));
-        geo.faces.push(new THREE.Face3(sI+j+1, sI+j, sI2+j));
-        geo.faces.push(new THREE.Face3(sI+j+1, sI2+j, sI2+j+1));
         geo.faces.push(new THREE.Face3(sI2+j, sI+j+1, sI2+j+1));
       }
-      if(j === 0 && i !== meshPoints-1) {
-        //First or last, fill end
-        geo.faces.push(new THREE.Face3(sI+j, sI2+j, i));
-        geo.faces.push(new THREE.Face3(sI2+j, sI+j, i));
+      // if(j === 0 && i !== meshPoints-1) {
+      //   //First or last, fill end
+      //   geo.faces.push(new THREE.Face3(sI+j, sI2+j, i));
 
-        geo.faces.push(new THREE.Face3(sI2+j, i, i+1));
-        geo.faces.push(new THREE.Face3(sI2+j, i+1, i));
-      } else if(j === meshPoints-2 && i !== meshPoints-1) {
-        //First or last, fill end
-        geo.faces.push(new THREE.Face3(sI+j+1, sI2+j+1, i));
-        geo.faces.push(new THREE.Face3(sI2+j+1, sI+j+1, i));
+      //   geo.faces.push(new THREE.Face3(sI2+j, i+1, i));
+      // } else if(j === meshPoints-2 && i !== meshPoints-1) {
+      //   //First or last, fill end
+      //   geo.faces.push(new THREE.Face3(sI2+j+1, sI+j+1, i));
 
-        geo.faces.push(new THREE.Face3(sI2+j+1, i, i+1));
-        geo.faces.push(new THREE.Face3(sI2+j+1, i+1, i));
-      }
+      //   geo.faces.push(new THREE.Face3(sI2+j+1, i, i+1));
+      // }
     }
   }
 
@@ -503,6 +502,83 @@ DisplayLibrary.prototype.createRotationFunction = function(params) {
     var functionAt = 'f('+v+')';
     var val = parser.eval(functionAt);
     return Number(val);
+  }
+}
+
+DisplayLibrary.prototype.getSTLFile = function(params) {
+  var rotationObject = this.scene.getObjectByName('current');
+  var faces = [];
+  var startingIndex;
+  var geometryFaces = rotationObject.geometry.faces;
+  var geometryVerts = rotationObject.geometry.vertices;
+  console.log(rotationObject);
+  if(rotationObject.morphTargetInfluences[rotationObject.morphTargetInfluences.length - 1] >= 0.9) { //Check whether on last morph target (complete object)
+    //If complete object, skip first 400 faces, which make up the ends of the object (that would be inside the solid)
+    startingIndex = 400;
+    var geoFrame = 20
+    var frame = 21;
+  } else {
+    //Start at 0 to have a complete object
+    var frame = getPrevFrame(rotationObject.morphTargetInfluences) + 1;
+    startingIndex = 0;
+  }
+
+  //Push faces into the string
+  var stlString = "solid RevolutionsOfSolids \n";
+  for(var i = startingIndex; i < geometryFaces.length; i++) {
+    stlString += ("facet normal "+stringifyVector([round(geometryFaces[i].normal.x, 6), round(geometryFaces[i].normal.y, 6), round(geometryFaces[i].normal.z, 6)]));
+    stlString += ("outer loop \n");
+    stlString += ("vertex " + stringifyVector(linInterpolate(geometryFaces[i].a, rotationObject.geometry.morphTargets, geoFrame, rotationObject.morphTargetInfluences[frame])));
+    stlString += ("vertex " + stringifyVector(linInterpolate(geometryFaces[i].b, rotationObject.geometry.morphTargets, geoFrame, rotationObject.morphTargetInfluences[frame])));
+    stlString += ("vertex " + stringifyVector(linInterpolate(geometryFaces[i].c, rotationObject.geometry.morphTargets, geoFrame, rotationObject.morphTargetInfluences[frame])));
+    stlString += ("endloop \n");
+    stlString += ("endfacet \n");
+    // var v1 = linInterpolate(geometryFaces[i].a, rotationObject.geometry.morphTargets, prevFrame, rotationObject.morphTargetInfluences[prevFrame+1]);
+    // var v2 = linInterpolate(geometryFaces[i].b, rotationObject.geometry.morphTargets, prevFrame, rotationObject.morphTargetInfluences[prevFrame+1]);
+    // var v3 = linInterpolate(geometryFaces[i].c, rotationObject.geometry.morphTargets, prevFrame, rotationObject.morphTargetInfluences[prevFrame+1]);
+  }
+  stlString += ("endsolid");
+  // for(var i = startingIndex; i < geometryFaces.length; i++) {
+  //   stlString += stringifyVector([geometryFaces[i].normal.x.toPrecision(6), geometryFaces[i].normal.y.toPrecision(6), geometryFaces[i].normal.z.toPrecision(6)]);
+  //   stlString += (stringifyVector(linInterpolate(geometryFaces[i].a, rotationObject.geometry.morphTargets, prevFrame, rotationObject.morphTargetInfluences[prevFrame+1])));
+  //   stlString += (stringifyVector(linInterpolate(geometryFaces[i].b, rotationObject.geometry.morphTargets, prevFrame, rotationObject.morphTargetInfluences[prevFrame+1])));
+  //   stlString += (stringifyVector(linInterpolate(geometryFaces[i].c, rotationObject.geometry.morphTargets, prevFrame, rotationObject.morphTargetInfluences[prevFrame+1])));
+  //   stlString += "0 \n";
+
+  // }
+
+  var blob = new Blob([stlString], {type: 'text/plain'});
+
+  return blob;
+
+
+  
+
+  function getPrevFrame(mtInfluences) {
+    for(var i=0; i < mtInfluences.length; i++) {
+      if(mtInfluences[i] !== 0) {
+        return i;
+      }
+    }
+  }
+
+  function linInterpolate(vertex, morphTargets, frame, morphFraction) {
+    var vert1 = morphTargets[frame-1].vertices[vertex];
+    var vert2 = morphTargets[frame].vertices[vertex];
+    var xyz = [];
+    //Round to about 4 decimals
+    xyz[0] = round(vert1.x + (vert2.x - vert1.x)*morphFraction, 6);
+    xyz[1] = round(vert1.y + (vert2.y - vert1.y)*morphFraction, 6);
+    xyz[2] = round(vert1.z + (vert2.z - vert1.z)*morphFraction, 6);
+    return xyz;
+  }
+
+  function stringifyVector(vec) {
+    return vec[0]+" "+vec[1]+" "+vec[2]+" \n";
+  }
+
+  function round(num, decimal) {
+    return Math.round(num * Math.pow(10, decimal)) / Math.pow(10, decimal);
   }
 }
 

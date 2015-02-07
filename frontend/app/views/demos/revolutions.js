@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import DisplayLibrary from '../../libraries/mathAnimationLibrary/dist/display-library';
+// import FileSaver from 'FileSaver';
 
 var DemosRevolutionsView = Ember.View.extend({
   classNames: ['full-height-view'],
@@ -69,6 +70,11 @@ var DemosRevolutionsView = Ember.View.extend({
     },
     speedAnimation: function() {
       this.display.animationSpeed *= 2;
+    },
+    getSTLFile: function() {
+      // var name = this.get('controller').get('name');
+      var blob = this.display.getSTLFile(this.params);
+      saveAs(blob, (name + 'test.stl'));
     },
     resetDisplay: function() {
       this.display.clearDisplay();

@@ -20,5 +20,6 @@ var app = new EmberApp();
 app.import('bower_components/jquery-cookie/jquery.cookie.js');
 app.import('bower_components/mathjs/dist/math.js');
 app.import('bower_components/materialize/dist/css/materialize.css');
+app.import('bower_components/FileSaver/FileSaver.js');
 
 module.exports = app.toTree();

@@ -26,7 +26,8 @@ module.exports = function(environment) {
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     // ENV.APP.LOG_VIEW_LOOKUPS = true;
     ENV.contentSecurityPolicy = {
-      'style-src': "'self' 'unsafe-inline' http://fonts.googleapis.com"
+      'style-src': "'self' 'unsafe-inline' http://fonts.googleapis.com http://maxcdn.bootstrapcdn.com",
+      'font-src': "'self' http://maxcdn.bootstrapcdn.com https://fonts.gstatic.com"
     }
   }
 
