@@ -131,16 +131,20 @@ var DualSliderComponent = Ember.Component.extend({
 			});
 		},
 		inputValueFirst: function() {
-			this.toggleProperty('inputtingFirst');
+			console.log(this);
+			// this.toggleProperty('inputtingFirst');
+			this.set('inputtingFirst', true);
 		},
 		inputValueSecond: function() {
 			this.toggleProperty('inputtingSecond');
 		},
 		confirmValueSecond: function() {
 			this.toggleProperty('inputtingSecond');
+			this.triggerAction(this.get('first'), this.get('second'));
 		},
 		confirmValueFirst: function() {
 			this.toggleProperty('inputtingFirst');
+			this.triggerAction(this.get('first'), this.get('second'));
 		},
 	},
 	triggerAction: function(pos1, pos2) {

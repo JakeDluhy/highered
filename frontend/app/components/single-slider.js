@@ -72,6 +72,7 @@ var SingleSliderComponent = Ember.Component.extend({
 		},
 		confirmValue: function() {
 			this.toggleProperty('inputting');
+			this.triggerAction(this.get('pos'));
 		},
 	},
 	triggerAction: function(position) {

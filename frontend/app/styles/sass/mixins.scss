@@ -2,3 +2,10 @@
   #{$property}: -webkit-calc(#{$expression}); 
   #{$property}: calc(#{$expression}); 
 } 
+
+@mixin easeoutTransition($time) {
+	-webkit-transition:#{$time} ease-out all;
+  -moz-transition:#{$time} ease-out all;
+  -o-transition:#{$time} ease-out all;
+  transition:#{$time} ease-out all;
+}

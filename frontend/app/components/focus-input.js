@@ -6,4 +6,4 @@ var FocusInput = Ember.TextField.extend({
 	}
 });
 
-export default Ember.Handlebars.helper('focus-input', FocusInput);
+export default FocusInput;

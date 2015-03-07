@@ -72,9 +72,9 @@ var DemosRevolutionsView = Ember.View.extend({
       this.display.animationSpeed *= 2;
     },
     getSTLFile: function() {
-      // var name = this.get('controller').get('name');
+      var name = this.get('controller').get('printName');
       var blob = this.display.getSTLFile(this.params);
-      saveAs(blob, (name + 'test.stl'));
+      saveAs(blob, (name + '.stl'));
     },
     resetDisplay: function() {
       this.display.clearDisplay();
@@ -90,7 +90,7 @@ var DemosRevolutionsView = Ember.View.extend({
 
     //UI handling actions
     openContainers: function() {
-      if(this.params.discrete) {this.slideDown('.discrete-wrapper')};
+      if(this.params.discrete) {this.slideDown('.discrete-wrapper');}
       this.slideDown('.range-wrapper');
       this.slideDown('.axis-wrapper');
     },
@@ -109,7 +109,7 @@ var DemosRevolutionsView = Ember.View.extend({
       this.slideDown('.axis-wrapper');
     },
     toggleDiscrete: function() {
-      $('.discrete-wrapper').slideToggle()
+      $('.discrete-wrapper').slideToggle();
     },
     toggleRange: function() {
       $('.range-wrapper').slideToggle();

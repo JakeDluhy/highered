@@ -119,6 +119,9 @@ md-input-group.md-default-theme {
 
 .full-height-view {
   height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
 }
 
 .display-none {

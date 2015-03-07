@@ -511,7 +511,6 @@ DisplayLibrary.prototype.getSTLFile = function(params) {
   var startingIndex;
   var geometryFaces = rotationObject.geometry.faces;
   var geometryVerts = rotationObject.geometry.vertices;
-  console.log(rotationObject);
   if(rotationObject.morphTargetInfluences[rotationObject.morphTargetInfluences.length - 1] >= 0.9) { //Check whether on last morph target (complete object)
     //If complete object, skip first 400 faces, which make up the ends of the object (that would be inside the solid)
     startingIndex = 400;
@@ -519,8 +518,9 @@ DisplayLibrary.prototype.getSTLFile = function(params) {
     var frame = 21;
   } else {
     //Start at 0 to have a complete object
-    var frame = getPrevFrame(rotationObject.morphTargetInfluences) + 1;
     startingIndex = 0;
+    var geoFrame = getPrevFrame(rotationObject.morphTargetInfluences);
+    var frame = geoFrame + 1;
   }
 
   //Push faces into the string
@@ -563,6 +563,8 @@ DisplayLibrary.prototype.getSTLFile = function(params) {
   }
 
   function linInterpolate(vertex, morphTargets, frame, morphFraction) {
+    console.log(morphTargets);
+    console.log(frame);
     var vert1 = morphTargets[frame-1].vertices[vertex];
     var vert2 = morphTargets[frame].vertices[vertex];
     var xyz = [];

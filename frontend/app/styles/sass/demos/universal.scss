@@ -1,5 +1,5 @@
 .options-container{
-  overflow: scroll;
+  overflow: auto;
   &.collapsed {
     width:50px;
   }
@@ -20,22 +20,26 @@
     height: 50px;
     padding: 10px;
     margin-top: 10px;
+    
     i {
       font-size: 30px;
       line-height: 30px;
     }
-  }
-  .expand {
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin-top: 0;
   }
   .collapse {
     margin: 0;
     position: absolute;
     right: 0;
     top: 0;
+  }
+  .top-controls {
+    button:first-child {
+      margin-top: 0;
+    }
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 0;
   }
   .controls {
     button:first-child {
@@ -74,6 +78,48 @@
   .start-animation {
     width: 100%;
   }
+}
+
+.printing-container {
+  width: 400px;
+  position: absolute;
+  top: 0;
+  right: -400px;
+  @include easeoutTransition(0.5s);
+  background-color: $lightBackground;
+  button, md-input-group {
+    margin: 20px;
+  }
+  &.active {
+    right: 0;
+  }
+  .retract-printer {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .default-icon {
+    width: 50px;
+    height: 50px;
+    padding: 10px;
+    margin: 0px;
+    i {
+      font-size: 30px;
+      line-height: 30px;
+    }
+  }
+}
+
+.block-header {
+  margin: 0;
+  background-color: $accent;
+  text-transform: uppercase;
+  color: white;
+  font-weight: 300;
+  padding: 8px 20px;
+  font-size: 14px !important;
+  height: 50px;
+  text-align: center;
 }
 
 .function-input-container {

@@ -1,0 +1,6 @@
+<div {{bind-attr class=":printing-container :z-depth-2 printing:active"}}>
+	{{#paper-button classNames="retract-printer default-icon" action="printContainer"}}<i class="fa fa-chevron-right"></i>{{/paper-button}}
+	<h4 class="block-header">Print Options</h4>
+	{{paper-text label="Print Name" value=printName}}
+	{{#paper-button action="getSTLFile" target="view"}}Print{{/paper-button}}
+</div>

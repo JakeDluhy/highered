@@ -10,11 +10,14 @@
       {{partial 'demos/partials/range-container'}}
       {{partial 'demos/partials/axis-container'}}
       {{#paper-button classNames="start-animation" action="startAnimation" target="view"}}<i class="fa fa-play"></i>{{/paper-button}}
-      {{#paper-button classNames="start-animation" action="getSTLFile" target="view"}}<i class="fa fa-play"></i>{{/paper-button}}
     </div>
   </div>
+
   {{else}}
-  {{partial 'demos/partials/expand-options'}}
+  <div class="top-controls">
+    {{partial 'demos/partials/expand-options'}}
+    {{partial 'demos/partials/printer-button'}}
+  </div>
   <div class="controls z-depth-2">
     {{partial 'demos/partials/animation-controls'}}
     {{partial 'demos/partials/reset-display'}}
@@ -22,3 +25,4 @@
   {{/if}}  
 </div>
 <div class='primary-container'></div>
+{{partial 'demos/partials/printer-container'}}

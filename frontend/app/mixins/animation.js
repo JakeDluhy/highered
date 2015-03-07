@@ -4,6 +4,7 @@ var AnimationMixin = Ember.Mixin.create({
   optionsView: true,
   axisIsX: true,
   continuous: true,
+  printing: false,
   setAxis: function() {
     var axis;
     (this.get('axisIsX') === true ? axis = 'x' : axis = 'y');
@@ -17,6 +18,9 @@ var AnimationMixin = Ember.Mixin.create({
       var functionInput = this.get('functionInput');
       this.trigger('showFunction', functionInput);
     },
+    printContainer: function() {
+      this.toggleProperty('printing');
+    }
   },
 });
 

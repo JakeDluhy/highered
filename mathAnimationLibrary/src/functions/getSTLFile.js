@@ -15,6 +15,7 @@ DisplayLibrary.prototype.getSTLFile = function(params) {
     //Start at 0 to have a complete object
     var frame = getPrevFrame(rotationObject.morphTargetInfluences) + 1;
     startingIndex = 0;
+    var frame = geoFrame + 1;
   }
 
   //Push faces into the string

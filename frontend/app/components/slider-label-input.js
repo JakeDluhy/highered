@@ -6,4 +6,4 @@ var SliderLabelInput = Ember.TextField.extend({
 	}
 });
 
-export default Ember.Handlebars.helper('slider-label-input', SliderLabelInput);
+export default SliderLabelInput;

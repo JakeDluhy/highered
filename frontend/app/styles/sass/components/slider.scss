@@ -32,16 +32,6 @@
 						height: 18px;
 						background-color: #008cba;
 					}
-					.handle-label {
-						display: block;
-						position: absolute;
-						border: 1px solid #D9D9D9;
-						font: 400 12px/12px Arial;
-						border-radius: 3px;
-						background: #fff;
-						padding: 5px;
-						text-align: center;
-					}
 					&.handle-container-lower {
 						top: -3px;
 						.handle {
@@ -101,15 +91,7 @@
 						background-color: #008cba;
 					}
 					.handle-label {
-						display: block;
 						max-width: 50px;
-						position: absolute;
-						border: 1px solid #D9D9D9;
-						font: 400 12px/12px Arial;
-						border-radius: 3px;
-						background: #fff;
-						padding: 5px;
-						text-align: center;
 					}
 					&.handle-container-lower {
 						left: -62px;
@@ -132,6 +114,33 @@
 						}
 					}
 				}
+			}
+		}
+	}
+	.handle-label {
+		display: block;
+		max-width: 50px;
+		height: 43px;
+		position: absolute;
+		border: 1px solid #D9D9D9;
+		font: 300 12px/12px Arial;
+		border-radius: 3px;
+		background: #fff;
+		padding: 5px;
+		text-align: center;
+
+		input {
+			height: 100%;
+			width: 100%;
+			border: none !important;
+			box-shadow: none;
+			-webkit-box-shadow: none;
+			text-align: center;
+			margin: 0;
+			&:focus {
+				border: none !important;
+				box-shadow: none;
+				-webkit-box-shadow: none;
 			}
 		}
 	}
