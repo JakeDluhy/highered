@@ -99,9 +99,9 @@ DisplayLibrary.prototype.createRotationFunction = function(params) {
     //Push along theta
     for(var j = 0; j < meshPoints; j++) {
       if(axis === 'y') {
-        geo.vertices.push(new THREE.Vector3(rMain*Math.cos(j*tmesh/1000)+axisVal, val, rMain*Math.sin(j*tmesh/1000)));
+        geo.vertices.push(new THREE.Vector3(rMain*Math.sin(j*tmesh/1000)+axisVal, val, rMain*Math.cos(j*tmesh/1000)));
         for(var k = 0; k < 21; k++) {
-          morphVerticeHolder[k].push(new THREE.Vector3(rMain*Math.cos(j*tmesh*(k)/20)+axisVal, val, rMain*Math.sin(j*tmesh*(k)/20)));
+          morphVerticeHolder[k].push(new THREE.Vector3(rMain*Math.sin(j*tmesh*(k)/20)+axisVal, val, rMain*Math.cos(j*tmesh*(k)/20)));
         }
       } else {
         geo.vertices.push(new THREE.Vector3(val, rMain*Math.cos(j*tmesh/1000)+axisVal,rMain*Math.sin(j*tmesh/1000)));

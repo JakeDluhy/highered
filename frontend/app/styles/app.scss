@@ -1,3 +1,4 @@
+@import 'ember-paper';
 @import 'sass/colors';
 @import 'sass/mixins';
 
@@ -16,6 +17,7 @@
 
 @import 'sass/demos/index';
 @import 'sass/demos/universal';
+@import 'sass/demos/bridge-builder';
 
 @import 'sass/root/header';
 @import 'sass/root/index';

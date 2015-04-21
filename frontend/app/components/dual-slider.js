@@ -131,7 +131,6 @@ var DualSliderComponent = Ember.Component.extend({
 			});
 		},
 		inputValueFirst: function() {
-			console.log(this);
 			// this.toggleProperty('inputtingFirst');
 			this.set('inputtingFirst', true);
 		},

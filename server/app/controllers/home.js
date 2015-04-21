@@ -3,6 +3,7 @@ var User = require('../models/user');
 module.exports = {
   index: function(req, res) {
     res.render('layouts/index');
+    console.log('Here');
   },
   signup: function(req, res) {
     var newUser = new User(req.body);

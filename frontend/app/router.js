@@ -16,6 +16,8 @@ Router.map(function() {
     this.route('revolutions');
     this.route('integrals');
     this.route('derivatives');
+    this.route('cross-sections');
+    this.route('bridge-builder');
   });
 
   //Lessons

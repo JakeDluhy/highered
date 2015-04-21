@@ -8,12 +8,12 @@
       {{partial 'demos/partials/function-container'}}
       {{partial 'demos/partials/discrete-container'}}
       <div class="range-container">
-        {{#paper-button classNames="sub-header" action="toggleRange" target="view"}}Restrict The Integration{{/paper-button}}
-        <div class="range-wrapper option-wrapper" {{action 'rangeFinished' on='mouseLeave' target="view"}}>
+        {{#paper-button classNames="sub-header" action="toggleRange" target=view}}Restrict The Integration{{/paper-button}}
+        <div class="range-wrapper option-wrapper" {{action 'rangeFinished' on='mouseLeave' target=view}}>
           {{#if axisIsX}}
-            {{dual-slider orientation="horizontal" action='dualBoundIntegrate' target="view"}}
+            {{dual-slider orientation="horizontal" action='dualBoundIntegrate' target=view}}
           {{else}}
-            {{dual-slider orientation="vertical" action='dualBoundIntegrate' target="view"}}
+            {{dual-slider orientation="vertical" action='dualBoundIntegrate' target=view}}
           {{/if}}
         </div>
       </div>

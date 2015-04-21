@@ -1,0 +1,6 @@
+<div class="cross-sections-container">
+  {{#paper-button classNames="sub-header" action="toggleCrossSections" target=view}}Cross Sections{{/paper-button}}
+  <div class="cross-section-wrapper option-wrapper" {{action 'crossSectionsFinished' on='mouseLeave' target="view"}}>
+    {{single-slider orientation="horizontal" action="setNumCrossSections" target="view" rangeStart=1 rangeEnd=20 pos=10}}
+  </div>
+</div>

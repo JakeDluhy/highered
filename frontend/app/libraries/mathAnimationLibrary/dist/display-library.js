@@ -45,10 +45,345 @@ function DisplayLibrary(container, javaContainer, buildAxes, buildConstraintBox,
     requestAnimationFrame(render);
     controls.update();
     renderer.render(scene, camera);
-
   }
   
 }
+
+// New Function under development
+DisplayLibrary.prototype.renderLineDesign = function(linesContainer, connectionData, view) {
+  var geo = new THREE.Geometry();
+
+  if(connectionData) {
+    var connectionPoints = connectionData.points;
+    var reverse = connectionData.reverse;
+  }
+
+  var beamWidth = 0.3;
+
+  //Reset the surface
+  if(!(currentObject === null)) {
+    var currentObject = this.scene.getObjectByName('current');
+    this.scene.remove(currentObject);
+  }
+
+  var x1, y1, x2, y2;
+  var maxMin = getMaxMinX(linesContainer);
+  var max = maxMin[0]/10;
+  var min = maxMin[1]/10;
+  
+  for(var i=0; i < linesContainer.length; i++) {
+    var sI = geo.vertices.length;
+    x1 = linesContainer[i].x1/10;
+    y1 = linesContainer[i].y1/10;
+    x2 = linesContainer[i].x2/10;
+    y2 = linesContainer[i].y2/10;
+    
+    if(Math.abs(x2-x1) >= Math.abs(y2-y1)) {
+      if(x1 > x2) {
+        var temp = [x1,x2,y1,y2];
+        x1 = temp[1];
+        x2 = temp[0];
+        y1 = temp[3];
+        y2 = temp[2];
+      }
+      geo.vertices.push(new THREE.Vector3(x1, y1+beamWidth, beamWidth));
+      geo.vertices.push(new THREE.Vector3(x1, y1+beamWidth, -beamWidth));
+      geo.vertices.push(new THREE.Vector3(x1, y1-beamWidth, beamWidth));
+      geo.vertices.push(new THREE.Vector3(x1, y1-beamWidth, -beamWidth));
+
+      geo.vertices.push(new THREE.Vector3(x2, y2+beamWidth, beamWidth));
+      geo.vertices.push(new THREE.Vector3(x2, y2+beamWidth, -beamWidth));
+      geo.vertices.push(new THREE.Vector3(x2, y2-beamWidth, beamWidth));
+      geo.vertices.push(new THREE.Vector3(x2, y2-beamWidth, -beamWidth));
+    } else {
+      if(y2 > y1) {
+        var temp = [x1,x2,y1,y2];
+        x1 = temp[1];
+        x2 = temp[0];
+        y1 = temp[3];
+        y2 = temp[2];
+      }
+      var xAdd = beamWidth;
+      var xSub = beamWidth;
+      if(x1 === max && x2 === max) {
+        xAdd = 0;
+        xSub = beamWidth;
+      } else if(x1 === min && x2 === min) {
+        xAdd = beamWidth;
+        xSub = 0;
+      }
+      geo.vertices.push(new THREE.Vector3(x1+xAdd, y1, beamWidth));
+      geo.vertices.push(new THREE.Vector3(x1+xAdd, y1, -beamWidth));
+      geo.vertices.push(new THREE.Vector3(x1-xSub, y1, beamWidth));
+      geo.vertices.push(new THREE.Vector3(x1-xSub, y1, -beamWidth));
+
+      geo.vertices.push(new THREE.Vector3(x2+xAdd, y2, beamWidth));
+      geo.vertices.push(new THREE.Vector3(x2+xAdd, y2, -beamWidth));
+      geo.vertices.push(new THREE.Vector3(x2-xSub, y2, beamWidth));
+      geo.vertices.push(new THREE.Vector3(x2-xSub, y2, -beamWidth));
+    }
+    
+
+    
+
+    geo.faces.push(new THREE.Face3(sI, sI+1, sI+3));
+    geo.faces.push(new THREE.Face3(sI, sI+3, sI+2));
+
+    geo.faces.push(new THREE.Face3(sI, sI+2, sI+6));
+    geo.faces.push(new THREE.Face3(sI, sI+6, sI+4));
+    geo.faces.push(new THREE.Face3(sI, sI+4, sI+5));
+    geo.faces.push(new THREE.Face3(sI, sI+5, sI+1));
+    geo.faces.push(new THREE.Face3(sI+1, sI+5, sI+7));
+    geo.faces.push(new THREE.Face3(sI+1, sI+7, sI+3));
+    geo.faces.push(new THREE.Face3(sI+3, sI+7, sI+6));
+    geo.faces.push(new THREE.Face3(sI+3, sI+6, sI+2));
+
+    geo.faces.push(new THREE.Face3(sI+7, sI+5, sI+4));
+    geo.faces.push(new THREE.Face3(sI+7, sI+4, sI+6));
+  }
+
+  if(view === 'side') {
+    for(i=0; i<connectionPoints.length; i++) {
+      var sI = geo.vertices.length;
+      var x = connectionPoints[i].x/10;
+      var y = connectionPoints[i].y/10;
+      var zCoord = -beamWidth;
+      if(reverse === true) {
+        zCoord = -zCoord;
+      }
+
+      geo.vertices.push(new THREE.Vector3(x+beamWidth/2, y+beamWidth/2, zCoord));
+      geo.vertices.push(new THREE.Vector3(x+beamWidth/2, y-beamWidth/2, zCoord));
+      geo.vertices.push(new THREE.Vector3(x-beamWidth/2, y+beamWidth/2, zCoord));
+      geo.vertices.push(new THREE.Vector3(x-beamWidth/2, y-beamWidth/2, zCoord));
+
+      geo.vertices.push(new THREE.Vector3(x+beamWidth/2, y+beamWidth/2, 2*zCoord));
+      geo.vertices.push(new THREE.Vector3(x+beamWidth/2, y-beamWidth/2, 2*zCoord));
+      geo.vertices.push(new THREE.Vector3(x-beamWidth/2, y+beamWidth/2, 2*zCoord));
+      geo.vertices.push(new THREE.Vector3(x-beamWidth/2, y-beamWidth/2, 2*zCoord));
+
+      if(reverse === true) {
+        geo.faces.push(new THREE.Face3(sI, sI+2, sI+6));
+        geo.faces.push(new THREE.Face3(sI, sI+6, sI+4));
+        geo.faces.push(new THREE.Face3(sI, sI+4, sI+5));
+        geo.faces.push(new THREE.Face3(sI, sI+5, sI+1));
+        geo.faces.push(new THREE.Face3(sI+1, sI+5, sI+7));
+        geo.faces.push(new THREE.Face3(sI+1, sI+7, sI+3));
+        geo.faces.push(new THREE.Face3(sI+3, sI+7, sI+6));
+        geo.faces.push(new THREE.Face3(sI+3, sI+6, sI+2));
+
+        geo.faces.push(new THREE.Face3(sI+7, sI+5, sI+4));
+        geo.faces.push(new THREE.Face3(sI+7, sI+4, sI+6));
+      }
+      geo.faces.push(new THREE.Face3(sI, sI+6, sI+2));
+      geo.faces.push(new THREE.Face3(sI, sI+4, sI+6));
+      geo.faces.push(new THREE.Face3(sI, sI+5, sI+4));
+      geo.faces.push(new THREE.Face3(sI, sI+1, sI+5));
+      geo.faces.push(new THREE.Face3(sI+1, sI+7, sI+5));
+      geo.faces.push(new THREE.Face3(sI+1, sI+3, sI+7));
+      geo.faces.push(new THREE.Face3(sI+3, sI+6, sI+7));
+      geo.faces.push(new THREE.Face3(sI+3, sI+2, sI+6));
+
+      geo.faces.push(new THREE.Face3(sI+7, sI+4, sI+5));
+      geo.faces.push(new THREE.Face3(sI+7, sI+6, sI+4));
+    }
+  }
+
+  geo.computeFaceNormals();
+  geo.computeVertexNormals();
+  var mat = new THREE.MeshNormalMaterial();
+
+  var functionObject = new THREE.Mesh(geo, mat);
+  this.scene.add(functionObject);
+  functionObject.name = 'current';
+
+  return functionObject;
+
+
+  function getMaxMinX(array) {
+    var max = array[0].x2;
+    var min = array[0].x1;
+    for(var i=0; i<array.length;i++) {
+      if(array[i].x1 > max) {
+        max = array[i].x1;
+      }
+      if(array[i].x2 > max) {
+        max = array[i].x2;
+      }
+      if(array[i].x1 < min) {
+        min = array[i].x1;
+      }
+      if(array[i].x2 < min) {
+        min = array[i].x2;
+      }
+    }
+    return [max,min];
+  }
+}
+
+
+DisplayLibrary.prototype.renderBridge = function(linesData) {
+  var thickness = 0.6;
+  var width = getWidth(linesData.bottom);
+  var height = getHeight(linesData.side);
+  var connectionData = {
+    reverse: false,
+    points: [{
+      x: 0,
+      y: 0
+    }, {
+      x: -100,
+      y: 0
+    }, {
+      x: 100,
+      y: 0
+    }]
+  };
+  var side1 = this.renderLineDesign(linesData.side, connectionData, 'side');
+  side1.name = 'side1';
+  connectionData.reverse = true;
+  var side2 = this.renderLineDesign(linesData.side, connectionData, 'side');
+  side2.name = 'side2';
+  var top = this.renderLineDesign(linesData.top);
+  top.name = 'top';
+  var bottom = this.renderLineDesign(linesData.bottom);
+  bottom.name = 'bottom';
+
+
+  side1.position.z = width/2+thickness/2;
+  side2.position.z = -(width/2+thickness/2);
+
+  top.rotation.x = Math.PI/2;
+  top.position.z = -width/2;
+  top.position.y = height;
+
+  bottom.rotation.x = Math.PI/2;
+  bottom.position.z = -width/2;
+  bottom.position.y = 0;
+
+  function getWidth(bottomArray) {
+    var maxMin = getMaxMinY(bottomArray);
+    return (maxMin[0] - maxMin[1])/10;
+  }
+  function getHeight(sideArray) {
+    var maxMin = getMaxMinY(sideArray);
+    return (maxMin[0] - maxMin[1])/10;
+  }
+  function getMaxMinY(array) {
+    var max = array[0].y2;
+    var min = array[0].y1;
+    for(var i=0; i<array.length;i++) {
+      if(array[i].y1 > max) {
+        max = array[i].y1;
+      }
+      if(array[i].y2 > max) {
+        max = array[i].y2;
+      }
+      if(array[i].y1 < min) {
+        min = array[i].y1;
+      }
+      if(array[i].y2 < min) {
+        min = array[i].y2;
+      }
+    }
+    return [max,min];
+  }
+}
+
+
+
+// Takes in the coordinates of two sanitized lines. By sanitized, this means that line1StartX < line2EndX and line2StartX < line2EndX
+DisplayLibrary.prototype.checkLineIntersection = function(line1StartX, line1StartY, line1EndX, line1EndY, line2StartX, line2StartY, line2EndX, line2EndY) {
+    // Adapted from http://jsfiddle.net/justin_c_rounds/Gd2S2/ which is adapted from the Wikipedia entry for intersection of two lines
+
+    // if the lines intersect, the result contains the x and y of the intersection (treating the lines as infinite) and booleans for whether line segment 1 or line segment 2 contain the point
+    var denominator, a, b, numerator1, numerator2, result = {
+      lines: [
+      {
+        x1: line1StartX,
+        y1: line1StartY,
+        x2: line1EndX,
+        y2: line1EndY
+      },
+      {
+        x1: line2StartX,
+        y1: line2StartY,
+        x2: line2EndX,
+        y2: line2EndY
+      }],
+      point: null
+    };
+    denominator = ((line2EndY - line2StartY) * (line1EndX - line1StartX)) - ((line2EndX - line2StartX) * (line1EndY - line1StartY));
+    // The lines are parallel. Check whether they lie on top of each other
+    if (denominator == 0) {
+      var max = Math.max;
+      var min = Math.min;
+      if((line1EndX > line2StartX) && (line1EndY > line2EndY)) {
+        result.lines = [
+        {
+          x1: line1StartX,
+          y1: line1StartY,
+          x2: line1EndX,
+          y2: line1EndY
+        },
+        {
+          x1: line1EndX,
+          y1: line1EndY,
+          x2: line2EndX,
+          y2: line2EndY
+        }
+        ];
+        result.point = {
+          x: line1EndX,
+          y: line1EndY
+        }
+      }
+      return result;
+    }
+    a = line1StartY - line2StartY;
+    b = line1StartX - line2StartX;
+    numerator1 = ((line2EndX - line2StartX) * a) - ((line2EndY - line2StartY) * b);
+    numerator2 = ((line1EndX - line1StartX) * a) - ((line1EndY - line1StartY) * b);
+    a = numerator1 / denominator;
+    b = numerator2 / denominator;
+
+    // if we cast these lines infinitely in both directions, they intersect here:
+    result.x = line1StartX + (a * (line1EndX - line1StartX));
+    result.y = line1StartY + (a * (line1EndY - line1StartY));
+/*
+        // it is worth noting that this should be the same as:
+        x = line2StartX + (b * (line2EndX - line2StartX));
+        y = line2StartX + (b * (line2EndY - line2StartY));
+        */
+    // if line1 is a segment and line2 is infinite, they intersect if:
+    if (a > 0 && a < 1) {
+      result.onLine1 = true;
+    }
+    // if line2 is a segment and line1 is infinite, they intersect if:
+    if (b > 0 && b < 1) {
+      result.onLine2 = true;
+    }
+    // if line1 and line2 are segments, they intersect if both of the above are true
+    return result;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 DisplayLibrary.prototype.invertedCoordinates = function() {
   var invCoor = new THREE.Object3D();
@@ -103,6 +438,10 @@ Output: Will create the surface
 
 
 DisplayLibrary.prototype.create2DFunction = function(params) {
+  var funcName;
+  (params.name === undefined ? funcName = 'current2DFunction' : funcName = params.name);
+  var funcColor;
+  (params.color === 'red' ? funcColor = 0xff0000 : funcColor = 0x00ff00);
   var start = Number(params.start);
   var end = Number(params.end);
   var mI = (end - start)/100;
@@ -117,14 +456,13 @@ DisplayLibrary.prototype.create2DFunction = function(params) {
   }
 
   var geo = new THREE.Geometry();
-  var mat = new THREE.LineBasicMaterial({linewidth: 5, color: 0xff0000});
+  var mat = new THREE.LineBasicMaterial({linewidth: 5, color: funcColor});
 
 
   //Reset the surface
-  if(!(currentObject === null)) {
-    var currentObject = this.scene.getObjectByName('current2DFunction');
-    this.scene.remove(currentObject);
-  }
+  var currentObject = this.scene.getObjectByName(funcName);
+  this.scene.remove(currentObject);
+
   for(var i = start; i < end; i += mI) {
     if(axis === 'y') {
       geo.vertices.push(new THREE.Vector3(solveEquation(i), i, 0));
@@ -134,7 +472,7 @@ DisplayLibrary.prototype.create2DFunction = function(params) {
   }
   var functionObject = new THREE.Line(geo, mat);
   this.scene.add(functionObject);
-  functionObject.name = 'current2DFunction';
+  functionObject.name = funcName;
 
   function solveEquation(v) {
     //Pass in a parser with a function f(x,y) define
@@ -146,7 +484,7 @@ DisplayLibrary.prototype.create2DFunction = function(params) {
 
 
 
-/* -------------------- Create 2D Function -------------------- 
+/* -------------------- Create Axis -------------------- 
 Generate an arbitrary surface passed on the equation passed in.
 
 Input: params - a javasript object passed in containing the the following optional attributes
@@ -417,9 +755,9 @@ DisplayLibrary.prototype.createRotationFunction = function(params) {
     //Push along theta
     for(var j = 0; j < meshPoints; j++) {
       if(axis === 'y') {
-        geo.vertices.push(new THREE.Vector3(rMain*Math.cos(j*tmesh/1000)+axisVal, val, rMain*Math.sin(j*tmesh/1000)));
+        geo.vertices.push(new THREE.Vector3(rMain*Math.sin(Math.PI/2 + j*tmesh/1000)+axisVal, val, rMain*Math.cos(Math.PI/2 + j*tmesh/1000)));
         for(var k = 0; k < 21; k++) {
-          morphVerticeHolder[k].push(new THREE.Vector3(rMain*Math.cos(j*tmesh*(k)/20)+axisVal, val, rMain*Math.sin(j*tmesh*(k)/20)));
+          morphVerticeHolder[k].push(new THREE.Vector3(rMain*Math.sin(Math.PI/2 + j*tmesh*(k)/20)+axisVal, val, rMain*Math.cos(Math.PI/2 + j*tmesh*(k)/20)));
         }
       } else {
         geo.vertices.push(new THREE.Vector3(val, rMain*Math.cos(j*tmesh/1000)+axisVal,rMain*Math.sin(j*tmesh/1000)));
@@ -505,7 +843,7 @@ DisplayLibrary.prototype.createRotationFunction = function(params) {
   }
 }
 
-DisplayLibrary.prototype.getSTLFile = function(params) {
+DisplayLibrary.prototype.getSTLFileRevolutions = function(params) {
   var rotationObject = this.scene.getObjectByName('current');
   var faces = [];
   var startingIndex;
@@ -533,6 +871,60 @@ DisplayLibrary.prototype.getSTLFile = function(params) {
     stlString += ("vertex " + stringifyVector(linInterpolate(geometryFaces[i].c, rotationObject.geometry.morphTargets, geoFrame, rotationObject.morphTargetInfluences[frame])));
     stlString += ("endloop \n");
     stlString += ("endfacet \n");
+  }
+  stlString += ("endsolid");
+
+  var blob = new Blob([stlString], {type: 'text/plain'});
+
+  return blob;
+
+
+  
+
+  function getPrevFrame(mtInfluences) {
+    for(var i=0; i < mtInfluences.length; i++) {
+      if(mtInfluences[i] !== 0) {
+        return i;
+      }
+    }
+  }
+
+  function linInterpolate(vertex, morphTargets, frame, morphFraction) {
+    var vert1 = morphTargets[frame-1].vertices[vertex];
+    var vert2 = morphTargets[frame].vertices[vertex];
+    var xyz = [];
+    //Round to about 4 decimals
+    xyz[0] = round(vert1.x + (vert2.x - vert1.x)*morphFraction, 6);
+    xyz[1] = round(vert1.y + (vert2.y - vert1.y)*morphFraction, 6);
+    xyz[2] = round(vert1.z + (vert2.z - vert1.z)*morphFraction, 6);
+    return xyz;
+  }
+
+  function stringifyVector(vec) {
+    return vec[0]+" "+vec[1]+" "+vec[2]+" \n";
+  }
+
+  function round(num, decimal) {
+    return Math.round(num * Math.pow(10, decimal)) / Math.pow(10, decimal);
+  }
+}
+
+
+DisplayLibrary.prototype.getSTLFile = function(params) {
+  var object = this.scene.getObjectByName('current');
+  var geometryFaces = object.geometry.faces;
+  var geometryVerts = object.geometry.vertices;
+
+  //Push faces into the string
+  var stlString = "solid RevolutionsOfSolids \n";
+  for(var i = 0; i < geometryFaces.length; i++) {
+    stlString += ("facet normal "+stringifyVector([round(geometryFaces[i].normal.x, 6), round(geometryFaces[i].normal.y, 6), round(geometryFaces[i].normal.z, 6)]));
+    stlString += ("outer loop \n");
+    stlString += ("vertex " + stringifyVector(getVert(geometryFaces[i].a, geometryVerts)));
+    stlString += ("vertex " + stringifyVector(getVert(geometryFaces[i].b, geometryVerts)));
+    stlString += ("vertex " + stringifyVector(getVert(geometryFaces[i].c, geometryVerts)));
+    stlString += ("endloop \n");
+    stlString += ("endfacet \n");
     // var v1 = linInterpolate(geometryFaces[i].a, rotationObject.geometry.morphTargets, prevFrame, rotationObject.morphTargetInfluences[prevFrame+1]);
     // var v2 = linInterpolate(geometryFaces[i].b, rotationObject.geometry.morphTargets, prevFrame, rotationObject.morphTargetInfluences[prevFrame+1]);
     // var v3 = linInterpolate(geometryFaces[i].c, rotationObject.geometry.morphTargets, prevFrame, rotationObject.morphTargetInfluences[prevFrame+1]);
@@ -552,31 +944,13 @@ DisplayLibrary.prototype.getSTLFile = function(params) {
   return blob;
 
 
-  
-
-  function getPrevFrame(mtInfluences) {
-    for(var i=0; i < mtInfluences.length; i++) {
-      if(mtInfluences[i] !== 0) {
-        return i;
-      }
-    }
-  }
-
-  function linInterpolate(vertex, morphTargets, frame, morphFraction) {
-    console.log(morphTargets);
-    console.log(frame);
-    var vert1 = morphTargets[frame-1].vertices[vertex];
-    var vert2 = morphTargets[frame].vertices[vertex];
-    var xyz = [];
-    //Round to about 4 decimals
-    xyz[0] = round(vert1.x + (vert2.x - vert1.x)*morphFraction, 6);
-    xyz[1] = round(vert1.y + (vert2.y - vert1.y)*morphFraction, 6);
-    xyz[2] = round(vert1.z + (vert2.z - vert1.z)*morphFraction, 6);
-    return xyz;
-  }
-
   function stringifyVector(vec) {
     return vec[0]+" "+vec[1]+" "+vec[2]+" \n";
+  }
+
+  function getVert(vertIndex, verts) {
+    var vert = verts[vertIndex];
+    return [vert.x, vert.y, vert.z];
   }
 
   function round(num, decimal) {
@@ -1345,5 +1719,202 @@ DisplayLibrary.prototype.showDerivative = function(params) {
     return Number(val);
   }
 }
+
+
+
+
+DisplayLibrary.prototype.crossSection3D = function(params) {
+  var start = Number(params.start);
+  var end = Number(params.end);
+  var range = end - start;
+  
+  var axis = (params.axis === undefined ? 'x' : params.axis);
+  var crossSections = (params.crossSecions === undefined ? 10 : parseInt(Number(params.crossSecions)));
+  var csWidth = range/crossSections;
+  var firstFuncVal;
+  var secondFuncVal;
+  var csLength;
+
+  var parser = math.parser();
+  if(axis === 'y') {
+    parser.eval('f(y) = ' + params.functionOne);
+    parser.eval('g(y) = ' + params.functionTwo);
+  } else {
+    parser.eval('f(x) = ' + params.functionOne);
+    parser.eval('g(x) = ' + params.functionTwo);
+  }
+  var csShape = (params.csShape === undefined ? 'square' : params.csShape);
+
+  var mI = (end - start)/100;
+  var meshPoints = Math.floor(range/mI)+1;
+
+  var geo = new THREE.Geometry();
+
+  //Reset the surface
+  if(!(currentObject === null)) {
+    var currentObject = this.scene.getObjectByName('current');
+    this.scene.remove(currentObject);
+  }
+
+  for(var i=0; i < crossSections; i++) {
+    var firstVal = start + i*csWidth; // Get the first CS value
+    var midVal = (start + csWidth/2) + i*csWidth;   // Centered rieman sums: start in between the CS width
+    var lastVal = start + (i+1)*csWidth; // Get the end CS value
+    var firstFuncVal = getFirstVal(midVal);
+    var secondFuncVal = getSecondVal(midVal);
+    var funcMiddleVal = (firstFuncVal + secondFuncVal)/2;
+    var funcRadius = Math.abs((firstFuncVal - secondFuncVal)/2);
+    if(secondFuncVal > firstFuncVal) {
+      var temp = secondFuncVal;
+      secondFuncVal = firstFuncVal;
+      firstFuncVal = temp;
+    }
+    csLength = Math.abs(secondFuncVal - firstFuncVal); // Get the length of the cross section
+
+    if(axis === 'y') {
+      if(csShape === 'square') {
+        
+        geo.vertices.push(new THREE.Vector3(secondFuncVal, firstVal, 0));
+        geo.vertices.push(new THREE.Vector3(firstFuncVal, firstVal, 0));
+        geo.vertices.push(new THREE.Vector3(secondFuncVal, firstVal, csLength));
+        geo.vertices.push(new THREE.Vector3(firstFuncVal, firstVal, csLength));
+
+        geo.vertices.push(new THREE.Vector3(secondFuncVal, lastVal, 0));
+        geo.vertices.push(new THREE.Vector3(firstFuncVal, lastVal, 0));
+        geo.vertices.push(new THREE.Vector3(secondFuncVal, lastVal, csLength));  
+        geo.vertices.push(new THREE.Vector3(firstFuncVal, lastVal, csLength));
+      } else if(csShape === 'triangle') {
+        geo.vertices.push(new THREE.Vector3(secondFuncVal, firstVal, 0));
+        geo.vertices.push(new THREE.Vector3(firstFuncVal, firstVal, 0));
+        geo.vertices.push(new THREE.Vector3((firstFuncVal+secondFuncVal)/2, firstVal, csLength*(Math.sqrt(3)/2)));
+
+        geo.vertices.push(new THREE.Vector3(secondFuncVal, lastVal, 0));
+        geo.vertices.push(new THREE.Vector3(firstFuncVal, lastVal, 0));
+        geo.vertices.push(new THREE.Vector3((firstFuncVal+secondFuncVal)/2, lastVal, csLength*(Math.sqrt(3)/2)));
+      } else if(csShape === 'semicircle') {
+        geo.vertices.push(new THREE.Vector3(funcMiddleVal, lastVal, 0));
+        geo.vertices.push(new THREE.Vector3(funcMiddleVal, firstVal, 0));
+        for(var j=0; j <= 100; j++) {
+          var theta = Math.PI*j/100; // Get the value for theta on the semicircle
+          var planeValue = funcMiddleVal - funcRadius*Math.cos(theta);
+          var zValue = funcRadius*Math.sin(theta);
+          geo.vertices.push(new THREE.Vector3(planeValue, lastVal, zValue));
+          geo.vertices.push(new THREE.Vector3(planeValue, firstVal, zValue));
+          
+        }
+      }
+    } else {
+      if(csShape === 'square') {
+        geo.vertices.push(new THREE.Vector3(firstVal, firstFuncVal, 0));
+        geo.vertices.push(new THREE.Vector3(firstVal, secondFuncVal, 0));
+        geo.vertices.push(new THREE.Vector3(firstVal, firstFuncVal, csLength));
+        geo.vertices.push(new THREE.Vector3(firstVal, secondFuncVal, csLength));
+
+        geo.vertices.push(new THREE.Vector3(lastVal, firstFuncVal, 0));
+        geo.vertices.push(new THREE.Vector3(lastVal, secondFuncVal, 0));
+        geo.vertices.push(new THREE.Vector3(lastVal, firstFuncVal, csLength));
+        geo.vertices.push(new THREE.Vector3(lastVal, secondFuncVal, csLength));
+      } else if(csShape === 'triangle') {
+        geo.vertices.push(new THREE.Vector3(firstVal, firstFuncVal, 0));
+        geo.vertices.push(new THREE.Vector3(firstVal, secondFuncVal, 0));
+        geo.vertices.push(new THREE.Vector3(firstVal, (firstFuncVal+secondFuncVal)/2, csLength*(Math.sqrt(3)/2)));
+
+        geo.vertices.push(new THREE.Vector3(lastVal, firstFuncVal, 0));
+        geo.vertices.push(new THREE.Vector3(lastVal, secondFuncVal, 0));
+        geo.vertices.push(new THREE.Vector3(lastVal, (firstFuncVal+secondFuncVal)/2, csLength*(Math.sqrt(3)/2)));
+      } else if(csShape === 'semicircle') {
+        geo.vertices.push(new THREE.Vector3(firstVal, funcMiddleVal, 0));
+        geo.vertices.push(new THREE.Vector3(lastVal, funcMiddleVal, 0));
+        for(var j=0; j <= 100; j++) {
+          var theta = Math.PI*j/100; // Get the value for theta on the semicircle
+          var planeValue = funcMiddleVal - funcRadius*Math.cos(theta);
+          var zValue = funcRadius*Math.sin(theta);
+          geo.vertices.push(new THREE.Vector3(firstVal, planeValue, zValue));
+          geo.vertices.push(new THREE.Vector3(lastVal, planeValue,  zValue));
+        }
+      }
+    }
+  }
+
+  var sI; // Starting Index
+  for(var i=0; i < crossSections; i++) {
+    if(csShape === 'square') {
+      sI = i*8;
+      geo.faces.push(new THREE.Face3(sI, sI+1, sI+2));
+      geo.faces.push(new THREE.Face3(sI+1, sI+3, sI+2));
+
+      geo.faces.push(new THREE.Face3(sI+1, sI+5, sI+3));
+      geo.faces.push(new THREE.Face3(sI+5, sI+7, sI+3));
+
+      geo.faces.push(new THREE.Face3(sI, sI+5, sI+1));
+      geo.faces.push(new THREE.Face3(sI, sI+4, sI+5));
+
+      geo.faces.push(new THREE.Face3(sI, sI+2, sI+4));
+      geo.faces.push(new THREE.Face3(sI+2, sI+6, sI+4));
+
+      geo.faces.push(new THREE.Face3(sI+2, sI+3, sI+7));
+      geo.faces.push(new THREE.Face3(sI+2, sI+7, sI+6));
+
+      geo.faces.push(new THREE.Face3(sI+4, sI+7, sI+5));
+      geo.faces.push(new THREE.Face3(sI+4, sI+6, sI+7));
+    } else if(csShape === 'triangle') {
+      sI = i*6;
+      geo.faces.push(new THREE.Face3(sI, sI+1, sI+2));
+
+      geo.faces.push(new THREE.Face3(sI+1, sI+4, sI+2));
+      geo.faces.push(new THREE.Face3(sI+2, sI+4, sI+5));
+
+      geo.faces.push(new THREE.Face3(sI, sI+4, sI+1));
+      geo.faces.push(new THREE.Face3(sI, sI+3, sI+4));
+
+      geo.faces.push(new THREE.Face3(sI, sI+2, sI+5));
+      geo.faces.push(new THREE.Face3(sI, sI+5, sI+3));
+
+      geo.faces.push(new THREE.Face3(sI+3, sI+5, sI+4));
+    } else if(csShape === 'semicircle') {
+      // There are 204 vertices for each cross section - 0,1 are the centers of the semicircles,
+      // and 2-203 are the vertices along the circle (101x2)
+      sI = i*204;
+      // Push bottom
+      geo.faces.push(new THREE.Face3(sI+2, sI+203, sI+3));
+      geo.faces.push(new THREE.Face3(sI+2, sI+202, sI+203));
+      // Start at 2, which is there the beginning of the semicircle is. End just before the last set of points
+      for(var j = 2; j < 202; j+=2) {
+        // Push the top of the semicircle
+        geo.faces.push(new THREE.Face3(sI+j, sI+j+1, sI+j+3));
+        geo.faces.push(new THREE.Face3(sI+j, sI+j+3, sI+j+2));
+        // Push the sides of the semicircle
+        geo.faces.push(new THREE.Face3(sI+j, sI+j+2, sI));
+        geo.faces.push(new THREE.Face3(sI+j+1, sI+1, sI+j+3));
+      }
+    }
+  }
+
+  geo.computeFaceNormals();
+  geo.computeVertexNormals();
+  var mat = new THREE.MeshNormalMaterial( { color: 0x990000 } );
+
+  var functionObject = new THREE.Mesh( geo, mat);
+  console.log(functionObject);
+
+  this.scene.add(functionObject);
+  functionObject.name = 'current';
+
+  function getFirstVal(v) {
+    // Pass in the value to find the value of the f(v) function
+    var functionTag = 'f('+v+')';
+    var result = parser.eval(functionTag);
+    return Number(result);
+  }
+  function getSecondVal(v) {
+    // Pass in the value to find the value of the g(v) function
+    var functionTag = 'g('+v+')';
+    var result = parser.eval(functionTag);
+    return Number(result);
+  }
+}
+
+
+
 
 export default DisplayLibrary;

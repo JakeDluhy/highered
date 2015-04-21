@@ -17,6 +17,7 @@
     "ember-data.model-fragments": "0.2.7",
     "mathjs": "~1.2.0",
     "materialize": "~0.95.0",
-    "hammerjs": "~2.0.4"
+    "hammerjs": "~2.0.4",
+    "d3": "~3.5.5"
   }
 }

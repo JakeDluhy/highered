@@ -1,0 +1,23 @@
+<div {{bind-attr class=":options-container :z-depth-2 defaultView:collapsed:expanded"}}>
+	{{#if optionsView}}
+  {{#paper-button classNames="header" action="openContainers" target=view}}Toolbox{{/paper-button}}
+	{{#paper-button classNames="default-icon collapse" action="collapseOptions" target=view}}<i class="fa fa-chevron-left"></i>{{/paper-button}}
+  <div class="content-wrapper options">
+    {{#paper-button classNames="toggle-view" action="toggleView" target=view}}Toggle{{/paper-button}}
+    {{#paper-button classNames="toggle-view" action="displayBridge" target=view}}Display{{/paper-button}}
+  </div>
+  <div class="axis-selection">
+    {{#paper-radio value='side' selected=viewChoice}}Side{{/paper-radio}}
+    {{#paper-radio value='top' selected=viewChoice}}Top{{/paper-radio}}
+    {{#paper-radio value='bottom' selected=viewChoice}}Bottom{{/paper-radio}}
+  </div>
+
+  {{else}}
+  <div class="top-controls">
+    {{partial 'demos/partials/expand-options'}}
+    {{partial 'demos/partials/printer-button'}}
+  </div>
+  {{/if}} 
+</div>
+<div class='primary-container'></div>
+{{partial 'demos/partials/printer-container'}}

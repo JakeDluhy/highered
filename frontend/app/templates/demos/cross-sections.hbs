@@ -4,12 +4,11 @@
   <div class="content-wrapper options">
     <div class='options content-container'>
       {{partial 'demos/partials/axis-selection'}}
-      {{partial 'demos/partials/discrete-selection'}}
-      {{partial 'demos/partials/function-container'}}
-      {{partial 'demos/partials/discrete-container'}}
+      {{partial 'demos/partials/cs-shape-selection'}}
+      {{partial 'demos/partials/dual-function-container'}}
       {{partial 'demos/partials/range-container'}}
-      {{partial 'demos/partials/axis-container'}}
-      {{#paper-button classNames="start-animation" action="startAnimation" target=view}}<i class="fa fa-play"></i>{{/paper-button}}
+      {{partial 'demos/partials/cross-sections-container'}}
+      {{#paper-button classNames="show-cross-sections" action="showShape" target=view}}Show Cross Sections{{/paper-button}}
     </div>
   </div>
 
@@ -19,7 +18,6 @@
     {{partial 'demos/partials/printer-button'}}
   </div>
   <div class="controls z-depth-2">
-    {{partial 'demos/partials/animation-controls'}}
     {{partial 'demos/partials/reset-display'}}
   </div>
   {{/if}}  

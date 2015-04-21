@@ -2,18 +2,38 @@ import Ember from 'ember';
 import DisplayLibrary from '../../libraries/mathAnimationLibrary/dist/display-library';
 // import FileSaver from 'FileSaver';
 
-var DemosRevolutionsView = Ember.View.extend({
+var DemosCrossSectionsView = Ember.View.extend({
   classNames: ['full-height-view'],
-  templateName: 'demos/revolutions',
+  templateName: 'demos/cross-sections',
   didInsertElement : function(){
     this.get('controller').on('setAxis', this, this.setAxis);
-    this.get('controller').on('chooseDiscrete', this, this.chooseDiscrete);
-    this.get('controller').on('showFunction', this, this.showFunction);
+    this.get('controller').on('chooseShape', this, this.chooseShape);
+    this.get('controller').on('showFunctions', this, this.showFunctions);
 
-    this.params = {
+    this.firstParams = {
       functionInput: 0,
       axis: 'x',
-      axisValue: 0,
+      start: -10,
+      end: 10,
+      name: 'firstFunction',
+      color: 'red'
+    };
+
+    this.secondParams = {
+      functionInput: 0,
+      axis: 'x',
+      start: -10,
+      end: 10,
+      name: 'secondFunction',
+      color: 'green'
+    };
+
+    this.crossSectionParams =  {
+      functionOne: 0,
+      functionTwo: 0,
+      axis: 'x',
+      csShape: 'square',
+      crossSecions: 10,
       start: -10,
       end: 10
     };
@@ -27,53 +47,44 @@ var DemosRevolutionsView = Ember.View.extend({
     });
   },
   setAxis: function(axis) {
-    this.params.axis = axis;
+    this.firstParams.axis = axis;
+    this.secondParams.axis = axis;
+    this.crossSectionParams.axis = axis;
   },
-  chooseDiscrete: function(isDiscrete) {
-    this.params.discrete = isDiscrete;
-    this.params.numDiscrete = 10;
-    (isDiscrete ? this.slideDown('.discrete-wrapper') : this.slideUp('.discrete-wrapper'));
+  chooseShape: function(shape) {
+    this.crossSectionParams.csShape = shape;
   },
-  showFunction: function(functionInput) {
-    this.params.functionInput = functionInput;
-    this.display.create2DFunction(this.params);
-    (this.params.discrete ? this.slideDown('.discrete-wrapper') : this.slideDown('.range-wrapper'));
+  showFunctions: function(functionOne, functionTwo) {
+    if(functionOne !== undefined) { this.firstParams.functionInput = functionOne; }
+    if(functionTwo !== undefined) { this.secondParams.functionInput = functionTwo; }
+    this.display.create2DFunction(this.firstParams);
+    this.display.create2DFunction(this.secondParams);
+    this.crossSectionParams.functionOne = functionOne;
+    this.crossSectionParams.functionTwo = functionTwo;
   },
   actions: {
     //Option setting event handlers
-    setNumDiscrete: function(num) {
-      this.params.numDiscrete = num;
+    setNumCrossSections: function(num) {
+      this.crossSectionParams.crossSecions = num;
     },
     dualBoundRestrict: function(lower, upper) {
-      this.params.start = lower;
-      this.params.end = upper;
-      this.display.create2DFunction(this.params);
+      this.crossSectionParams.start = lower;
+      this.crossSectionParams.end = upper;
+      this.firstParams.start = lower;
+      this.firstParams.end = upper;
+      this.secondParams.start = lower;
+      this.secondParams.end = upper;
+      this.display.create2DFunction(this.firstParams);
+      this.display.create2DFunction(this.secondParams);
     },
-    showAxis: function(axisVal) {
-      this.params.axisValue = axisVal;
-      this.display.createAxis(this.params);
-    },
-
-    //Controls for the animation
-    startAnimation: function() {
-      this.display.createRotationFunction(this.params);
+    showShape: function(shape) {
+      this.display.crossSection3D(this.crossSectionParams);
       this.collapseOptions();
     },
-    playAnimation: function() {
-      this.display.playAnimation();
-    },
-    pauseAnimation: function() {
-      this.display.pauseAnimation();
-    },
-    slowAnimation: function() {
-      this.display.animationSpeed *= 0.5;
-    },
-    speedAnimation: function() {
-      this.display.animationSpeed *= 2;
-    },
+
     getSTLFile: function() {
       var name = this.get('controller').get('printName');
-      var blob = this.display.getSTLFileRevolutions(this.params);
+      var blob = this.display.getSTLFile(this.params);
       saveAs(blob, (name + '.stl'));
     },
     resetDisplay: function() {
@@ -100,23 +111,19 @@ var DemosRevolutionsView = Ember.View.extend({
     collapseOptions: function() {
       this.collapseOptions();
     },
-    discreteFinished: function() {
-      this.slideUp('.discrete-wrapper');
-      this.slideDown('.range-wrapper');
-    },
     rangeFinished: function() {
       this.slideUp('.range-wrapper');
-      this.slideDown('.axis-wrapper');
+      this.slideDown('.cross-section-wrapper');
     },
-    toggleDiscrete: function() {
-      $('.discrete-wrapper').slideToggle();
+    crossSectionsFinished: function() {
+      this.slideUp('.cross-section-wrapper');
+    },
+    toggleCrossSections: function() {
+      $('.cross-section-wrapper').slideToggle();
     },
     toggleRange: function() {
       $('.range-wrapper').slideToggle();
     },
-    toggleAxis: function() {
-      $('.axis-wrapper').slideToggle();
-    }
   },
   //UI handling fOptions
   expandOptions: function() {
@@ -155,4 +162,4 @@ var DemosRevolutionsView = Ember.View.extend({
   },
 });
 
-export default DemosRevolutionsView;
+export default DemosCrossSectionsView;

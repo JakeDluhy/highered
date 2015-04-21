@@ -1,0 +1,16 @@
+<div class="function-container">
+  {{#if axisIsX}}
+    <div class="function-label">f(x) = </div>
+  {{else}}
+    <div class="function-label">f(y) = </div>
+  {{/if}}
+  {{input class="function-input" placeholder="Enter a function" value=functionOne action="showFunctions" on="focus-out"}}
+</div>
+<div class="function-container">
+  {{#if axisIsX}}
+    <div class="function-label">g(x) = </div>
+  {{else}}
+    <div class="function-label">g(y) = </div>
+  {{/if}}
+  {{input class="function-input" placeholder="Enter a function" value=functionTwo action="showFunctions" on="focus-out"}}
+</div>
